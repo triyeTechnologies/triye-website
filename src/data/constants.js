@@ -1,3 +1,5 @@
+import { getImagePath } from '../utils/assetUtils';
+
 export const SITE_CONFIG = {
   name: 'Triye',
   tagline: 'Eye that never blinks!',
@@ -25,7 +27,7 @@ export const VISION_FEATURES = [
     title: 'Real-Time Detection', 
     desc: 'AI analyzes traffic camera feeds instantly', 
     color: 'from-emerald-500 to-teal-500',
-    image: '/images/ai-detection-software.png',
+    image: getImagePath('ai-detection-software.png'),
     detailDesc: 'Our advanced AI continuously monitors traffic cameras throughout the metropolitan area, instantly detecting criminal behavior as it unfolds. The moment suspicious activity is identified, our system captures the complete scene and immediately alerts the nearest police units for rapid response.'
   },
   { 
@@ -33,7 +35,7 @@ export const VISION_FEATURES = [
     title: 'Suspect ID', 
     desc: 'Captures facial and vehicle details instantly', 
     color: 'from-blue-500 to-cyan-500',
-    image: '/images/criminal-identification-panel.png',
+    image: getImagePath('criminal-identification-panel.png'),
     detailDesc: 'When crime is detected, our system instantly creates a comprehensive digital profile of the suspect. This includes facial recognition data when visible, detailed clothing descriptions with colors and distinctive features, plus complete vehicle information including make, model, color, and license plate details.'
   },
   { 
@@ -41,7 +43,7 @@ export const VISION_FEATURES = [
     title: 'Network Tracking', 
     desc: 'Tracks movement across city infrastructure', 
     color: 'from-purple-500 to-pink-500',
-    image: '/images/city-wide-tracking-map.png',
+    image: getImagePath('city-wide-tracking-map.png'),
     detailDesc: 'As criminals attempt to escape, our interconnected traffic camera network seamlessly tracks their movement across the entire city. When one camera loses visual contact, surrounding cameras automatically begin searching for the tagged individual, ensuring continuous monitoring with complete coverage.'
   },
   { 
@@ -49,7 +51,7 @@ export const VISION_FEATURES = [
     title: 'Live Response', 
     desc: 'Coordinates with law enforcement instantly', 
     color: 'from-red-500 to-orange-500',
-    image: '/images/police-mobile-app-interface.png',
+    image: getImagePath('police-mobile-app-interface.png'),
     detailDesc: 'Police receive immediate notifications through dedicated mobile applications with complete suspect details and real time tracking information. As criminals move through the camera network, officers get continuous updates showing exact locations, enabling strategic positioning and coordinated pursuit operations.'
   }
 ];
@@ -259,14 +261,14 @@ export const FOUNDERS = [
   {
     name: 'Akshay R Kumar',
     role: 'CEO & Co-founder',
-    image: '/images/aksh.jpg',
+    image: getImagePath('aksh.jpg'),
     hasImage: true,
     gradient: 'from-emerald-500 to-blue-500'
   },
   {
     name: 'Aditya Belludi',
     role: 'CTO & Co-founder',
-    image: '/images/adi.png',
+    image: getImagePath('adi.png'),
     hasImage: true,
     gradient: 'from-blue-500 to-purple-500'
   },
