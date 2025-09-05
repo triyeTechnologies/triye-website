@@ -18,12 +18,24 @@ export const getVideoPath = (videoPath) => getAssetPath(`videos/${videoPath}`);
 
 // Export commonly used asset paths
 export const ASSETS = {
+  // Logo assets
   logo: getImagePath('logo.png'),
   triyeLogo: getImagePath('triye.png'),
   triyeLogo1: getImagePath('triye1.png'),
+  
+  // Hero section
   heroSection: getImagePath('hero-section.png'),
+  
+  // Founder images
   akshImage: getImagePath('aksh.jpg'),
   adiImage: getImagePath('adi.png'),
+  
+  // Feature images
+  aiDetectionSoftware: getImagePath('ai-detection-software.png'),
+  criminalIdentificationPanel: getImagePath('criminal-identification-panel.png'),
+  cityWideTrackingMap: getImagePath('city-wide-tracking-map.png'),
+  policeMobileAppInterface: getImagePath('police-mobile-app-interface.png'),
+  
+  // Videos
   demoVideo: getVideoPath('demo.mp4'),
-  // Add other assets as needed
 };
