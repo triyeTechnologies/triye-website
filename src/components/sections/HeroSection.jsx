@@ -2,6 +2,7 @@ import React from 'react';
 import { Play, ChevronDown } from 'lucide-react';
 import ParticleBackground from '../ui/ParticleBackground';
 import { OptimizedImage } from '../../utils/imageUtils.jsx';
+import { ASSETS } from '../../utils/assetUtils';
 
 const HeroSection = ({ isLoaded, onPlayVideo }) => {
   const scrollToNextSection = () => {
@@ -19,7 +20,7 @@ const HeroSection = ({ isLoaded, onPlayVideo }) => {
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
       <div className="absolute inset-0">
         <OptimizedImage
-          src="/images/hero-section.png"
+          src={ASSETS.heroSection}
           alt="Hero background"
           className="w-full h-full object-cover"
           placeholderType="hero"
