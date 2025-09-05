@@ -2,6 +2,7 @@ import React from 'react';
 import { Menu, X } from 'lucide-react';
 import { NAVIGATION_ITEMS, SITE_CONFIG } from '../../data/constants';
 import { OptimizedImage } from '../../utils/imageUtils.jsx';
+import { ASSETS } from '../../utils/assetUtils';
 
 const Header = ({ activeSection, mobileMenuOpen, setMobileMenuOpen }) => {
   const scrollToSection = (sectionId) => {
@@ -22,7 +23,7 @@ const Header = ({ activeSection, mobileMenuOpen, setMobileMenuOpen }) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-1 cursor-pointer" onClick={() => scrollToSection('home')}>
             <OptimizedImage 
-              src="/images/logo.png" 
+              src={ASSETS.logo}
               alt="Triye Logo" 
               className="w-12 h-12 sm:w-16 sm:h-16"
               placeholderType="logo"
@@ -30,7 +31,7 @@ const Header = ({ activeSection, mobileMenuOpen, setMobileMenuOpen }) => {
               height={64}
             />
             <OptimizedImage 
-              src="/images/triye.png" 
+              src={ASSETS.triyeLogo}
               alt="TRIYE" 
               className="h-8 sm:h-10 w-auto"
               placeholderType="logo"
