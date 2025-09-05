@@ -13,17 +13,7 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: true,
     assetsDir: 'assets',
-    // Ensure assets are copied correctly
-    rollupOptions: {
-      output: {
-        manualChunks: undefined,
-      }
-    }
   },
-  // Define global constants for asset paths
-  define: {
-    __BASE_URL__: JSON.stringify('/triye-website/')
-  },
-  // Ensure public assets are handled correctly
-  publicDir: 'public'
+  // This ensures assets are properly handled
+  assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.svg', '**/*.mp4', '**/*.webm']
 })
