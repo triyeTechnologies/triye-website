@@ -1,6 +1,7 @@
 import React from 'react';
 import { SITE_CONFIG } from '../../data/constants';
 import { OptimizedImage } from '../../utils/imageUtils.jsx';
+import { ASSETS } from '../../utils/assetUtils';
 
 const Footer = () => {
   return (
@@ -8,7 +9,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-start justify-center space-x-3 mb-8">
           <OptimizedImage 
-            src="/images/logo.png" 
+            src={ASSETS.logo}
             alt="Triye Logo" 
             className="w-12 h-12 sm:w-14 sm:h-14 filter brightness-0 invert"
             placeholderType="logo"
@@ -17,7 +18,7 @@ const Footer = () => {
           />
           <div className="flex flex-col items-start">
             <OptimizedImage 
-              src="/images/triye1.png" 
+              src={ASSETS.triyeLogo1}
               alt="TRIYE" 
               className="h-6 sm:h-8 w-auto filter brightness-0 invert mt-2"
               placeholderType="logo"
@@ -26,7 +27,7 @@ const Footer = () => {
           </div>
         </div>
         <p className="text-center text-gray-400 text-sm sm:text-base">
-          © 2025 {SITE_CONFIG.name}. All rights reserved. | Currently in development phase.
+          Â© 2025 {SITE_CONFIG.name}. All rights reserved. | Currently in development phase.
         </p>
       </div>
     </footer>
