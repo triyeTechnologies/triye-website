@@ -24,6 +24,9 @@ import { useScrollPosition } from '../hooks/useScrollPosition';
 // Data
 import { NAVIGATION_ITEMS } from '../data/constants';
 
+// Add this import to make ASSETS available
+// import { ASSETS } from '../utils/assetUtils';
+
 const TriyeWebsite = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -40,11 +43,12 @@ const TriyeWebsite = () => {
   useEffect(() => {
     setIsLoaded(true);
     
-    const criticalImages = ['/images/logo.png', '/hero-section.png'];
-    criticalImages.forEach(src => {
-      const img = new Image();
-      img.src = src;
-    });
+    // Remove or comment out the ASSETS usage for now
+    // const criticalImages = [ASSETS.logo, ASSETS.heroSection];
+    // criticalImages.forEach(src => {
+    //   const img = new Image();
+    //   img.src = src;
+    // });
   }, []);
 
   useEffect(() => {
@@ -135,7 +139,7 @@ const TriyeWebsite = () => {
             muted
             preload="metadata"
           >
-            <source src={ASSETS.demoVideo} type="video/mp4" />
+            <source src="/triye-website/videos/demo.mp4" type="video/mp4" />
             <p className="text-white text-center p-4">Your browser doesn't support video playback.</p>
           </video>
         </Modal>
