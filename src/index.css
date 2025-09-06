@@ -186,25 +186,32 @@
     @apply py-6 sm:py-8 md:py-10;
   }
 
-  /* Mobile typography improvements - Much smaller sizes */
+  /* Mobile typography improvements - Better balanced sizes */
   h1 {
-    @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl;
+    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl;
     line-height: 1.2 !important;
   }
   
   h2 {
-    @apply text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl;
+    @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl;
     line-height: 1.3 !important;
   }
   
   h3 {
-    @apply text-base sm:text-lg md:text-xl lg:text-2xl;
+    @apply text-lg sm:text-xl md:text-2xl lg:text-3xl;
     line-height: 1.4 !important;
+  }
+
+  /* Subheading styles for hero sections */
+  .hero-subheading {
+    font-size: 18px !important;
+    line-height: 1.4 !important;
+    font-weight: 600 !important;
   }
 
   /* Base text sizing */
   p, span, div {
-    font-size: 14px !important;
+    font-size: 15px !important;
     line-height: 1.5 !important;
   }
 
