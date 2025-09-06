@@ -5,6 +5,10 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* Prevent zoom on mobile */
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
 
   body {
@@ -12,12 +16,59 @@
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Prevent horizontal scroll */
+    overflow-x: hidden;
   }
 
   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+  }
+
+  /* Remove all focus outlines and blue highlights */
+  * {
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  /* Allow text selection for specific elements */
+  p, span, h1, h2, h3, h4, h5, h6, input, textarea {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }
+
+  /* Remove focus outlines completely */
+  button:focus,
+  a:focus,
+  input:focus,
+  textarea:focus,
+  select:focus,
+  *:focus {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    -webkit-appearance: none !important;
+  }
+
+  /* Remove blue highlight on mobile */
+  button, a, input, textarea, select {
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+  }
+
+  /* Allow text selection for inputs */
+  input, textarea {
+    -webkit-user-select: text !important;
+    user-select: text !important;
   }
 }
 
@@ -27,19 +78,17 @@
   }
 
   .btn-primary {
-    @apply bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-medium 
-           hover:from-blue-700 hover:to-purple-700 transition-all duration-200 
-           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+    @apply bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium text-sm sm:text-base
+           hover:from-blue-700 hover:to-purple-700 transition-all duration-200;
   }
 
   .btn-secondary {
-    @apply bg-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-lg font-medium 
-           border border-white/30 hover:bg-white/30 transition-all duration-200
-           focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent;
+    @apply bg-white/20 backdrop-blur-sm text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium text-sm sm:text-base
+           border border-white/30 hover:bg-white/30 transition-all duration-200;
   }
 
   .card {
-    @apply bg-white rounded-2xl shadow-lg border border-gray-100 p-6 
+    @apply bg-white rounded-xl sm:rounded-2xl shadow-lg border border-gray-100 p-4 sm:p-6 
            hover:shadow-xl transition-shadow duration-300;
   }
 
@@ -56,7 +105,7 @@
   }
 
   .section-padding {
-    @apply py-16 sm:py-24 lg:py-32;
+    @apply py-12 sm:py-16 lg:py-24;
   }
 
   .container-custom {
@@ -82,8 +131,9 @@
   .safe-area-bottom { padding-bottom: env(safe-area-inset-bottom); }
 }
 
+/* Custom scrollbar styling */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -92,43 +142,77 @@
 
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
 }
 
-*:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
-  border-radius: 4px;
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+  /* Ensure buttons are touch-friendly */
+  button, a[role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+  
+  /* Reduce animation intensity on mobile */
+  .animate-float {
+    animation-duration: 8s;
+  }
+  
+  /* Optimize text sizing for mobile */
+  html {
+    font-size: 16px;
+  }
+  
+  /* Prevent zoom on form focus */
+  input, select, textarea {
+    font-size: 16px !important;
+    -webkit-appearance: none;
+    border-radius: 0;
+  }
+
+  /* Better mobile spacing */
+  .section-padding {
+    @apply py-8 sm:py-12;
+  }
+
+  /* Mobile typography improvements */
+  h1 {
+    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl;
+  }
+  
+  h2 {
+    @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl;
+  }
+  
+  h3 {
+    @apply text-lg sm:text-xl md:text-2xl;
+  }
+
+  /* Mobile card improvements */
+  .card {
+    @apply p-3 sm:p-4 md:p-6;
+  }
+
+  /* Remove hover effects on mobile */
+  .card-hover:hover {
+    transform: none;
+    scale: none;
+  }
 }
 
-button:focus,
-a:focus {
-  outline: 2px solid #3B82F6;
-  outline-offset: 2px;
+/* Mobile landscape specific */
+@media (max-width: 768px) and (orientation: landscape) {
+  .section-padding {
+    @apply py-6 sm:py-8;
+  }
 }
 
-a, button, input, textarea, select {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-input, textarea, select {
-  @apply w-full px-4 py-3 border border-gray-300 rounded-lg 
-         focus:ring-2 focus:ring-blue-500 focus:border-transparent 
-         transition-colors duration-200 bg-white;
-}
-
-input:hover, textarea:hover, select:hover {
-  @apply border-gray-400;
-}
-
-input.error, textarea.error {
-  @apply border-red-500 bg-red-50;
-}
-
+/* Loading states */
 .loading {
   opacity: 0;
   transform: translateY(20px);
@@ -144,6 +228,7 @@ input.error, textarea.error {
   @apply animate-pulse bg-gray-200 rounded;
 }
 
+/* Button hover effects */
 .btn-hover {
   position: relative;
   overflow: hidden;
@@ -164,19 +249,21 @@ input.error, textarea.error {
   left: 100%;
 }
 
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.8), 0 0 30px rgba(59, 130, 246, 0.6);
-  }
+/* Improved mobile input styling */
+input, textarea, select {
+  @apply w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-lg text-sm sm:text-base
+         transition-colors duration-200 bg-white;
 }
 
-.pulse-glow {
-  animation: pulse-glow 2s infinite;
+input:hover, textarea:hover, select:hover {
+  @apply border-gray-400;
 }
 
+input.error, textarea.error {
+  @apply border-red-500 bg-red-50;
+}
+
+/* Accessibility improvements */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -198,6 +285,7 @@ input.error, textarea.error {
   }
 }
 
+/* High contrast mode support */
 @media (prefers-contrast: high) {
   .glass {
     @apply bg-white border-gray-400;
@@ -208,6 +296,7 @@ input.error, textarea.error {
   }
 }
 
+/* Print styles */
 @media print {
   .no-print {
     display: none !important;
@@ -224,26 +313,13 @@ input.error, textarea.error {
   }
 }
 
-@media (max-width: 768px) {
-  button, a {
-    min-height: 44px;
-    min-width: 44px;
-  }
-  
-  .animate-float {
-    animation-duration: 8s;
-  }
-  
-  body {
-    -webkit-text-size-adjust: 100%;
-  }
-}
-
+/* Loading overlay */
 .loading-overlay {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(8px);
 }
 
+/* Message styling */
 .error-message {
   @apply text-red-600 text-sm flex items-center space-x-1;
 }
@@ -260,15 +336,18 @@ input.error, textarea.error {
   @apply bg-red-500 text-white;
 }
 
+/* Image optimization */
 img {
   max-width: 100%;
   height: auto;
+  display: block;
 }
 
 .img-loading {
   @apply bg-gray-200 animate-pulse;
 }
 
+/* Screen reader only content */
 .sr-only {
   position: absolute;
   width: 1px;
