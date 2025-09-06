@@ -1,8 +1,8 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle, Loader } from 'lucide-react';
 import { validateForm } from '../../utils/validation';
 
-const ContactForm = React.memo(() => {
+const ContactForm = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -16,26 +16,23 @@ const ContactForm = React.memo(() => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', or null
 
-  const handleInputChange = useCallback((e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
-    
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
     
     // Clear error when user starts typing
-    setErrors(prev => {
-      if (prev[name]) {
-        const newErrors = { ...prev };
-        delete newErrors[name];
-        return newErrors;
-      }
-      return prev;
-    });
-  }, []);
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
+  };
 
-  const handleSubmit = useCallback(async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     // Validate form
@@ -49,68 +46,83 @@ const ContactForm = React.memo(() => {
     setSubmitStatus(null);
 
     try {
-      // Simulate form submission for now
-      console.log('Form submitted:', formData);
+      // Import EmailJS dynamically
+      const emailjs = await import('@emailjs/browser');
       
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // For now, just show success message
-      setSubmitStatus('success');
-      setFormData({
-        name: '',
-        email: '',
-        company: '',
-        phone: '',
-        message: '',
-        interest: 'general'
-      });
-      
-      // TODO: Replace this with actual EmailJS implementation once setup is complete
-      
+      // EmailJS configuration - Replace with your actual IDs
+      const serviceId = 'service_sr3rvk8'; // Replace with your EmailJS service ID
+      const templateId = 'template_ggkwvij'; // Replace with your EmailJS template ID
+      const publicKey = 'HR7HJxrWqCSXN0acf'; // Replace with your EmailJS public key
+
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        company: formData.company,
+        phone: formData.phone,
+        message: formData.message,
+        interest: formData.interest,
+        to_email: 'contact@triyetechnologies.com' // Your email
+      };
+
+      const response = await emailjs.send(
+        serviceId,
+        templateId,
+        templateParams,
+        publicKey
+      );
+
+      if (response.status === 200) {
+        setSubmitStatus('success');
+        setFormData({
+          name: '',
+          email: '',
+          company: '',
+          phone: '',
+          message: '',
+          interest: 'general'
+        });
+      } else {
+        throw new Error('Failed to send email');
+      }
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error('Error sending email:', error);
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
     }
-  }, [formData]);
+  };
 
-  const StatusMessage = useMemo(() => {
-    const Component = () => {
-      if (submitStatus === 'success') {
-        return (
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-            <div className="flex items-center space-x-2 text-blue-800">
-              <CheckCircle className="w-5 h-5" />
-              <span className="font-medium">Form submitted successfully!</span>
-            </div>
-            <p className="text-blue-700 text-sm mt-1">
-              Note: Email functionality is being set up. For now, please contact us directly at contact@triyetechnologies.com
-            </p>
+  const StatusMessage = () => {
+    if (submitStatus === 'success') {
+      return (
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+          <div className="flex items-center space-x-2 text-green-800">
+            <CheckCircle className="w-5 h-5" />
+            <span className="font-medium">Message sent successfully!</span>
           </div>
-        );
-      }
+          <p className="text-green-700 text-sm mt-1">
+            Thank you for reaching out. We'll get back to you within 24 hours.
+          </p>
+        </div>
+      );
+    }
 
-      if (submitStatus === 'error') {
-        return (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-            <div className="flex items-center space-x-2 text-red-800">
-              <AlertCircle className="w-5 h-5" />
-              <span className="font-medium">Form submission failed</span>
-            </div>
-            <p className="text-red-700 text-sm mt-1">
-              Please contact us directly at contact@triyetechnologies.com
-            </p>
+    if (submitStatus === 'error') {
+      return (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+          <div className="flex items-center space-x-2 text-red-800">
+            <AlertCircle className="w-5 h-5" />
+            <span className="font-medium">Failed to send message</span>
           </div>
-        );
-      }
+          <p className="text-red-700 text-sm mt-1">
+            Please try again or contact us directly at contact@triyetechnologies.com
+          </p>
+        </div>
+      );
+    }
 
-      return null;
-    };
-    
-    return Component;
-  }, [submitStatus]);
+    return null;
+  };
 
   return (
     <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8">
@@ -261,12 +273,12 @@ const ContactForm = React.memo(() => {
           {isSubmitting ? (
             <>
               <Loader className="w-5 h-5 animate-spin" />
-              <span>Submitting...</span>
+              <span>Sending Message...</span>
             </>
           ) : (
             <>
               <Send className="w-5 h-5" />
-              <span>Submit Form</span>
+              <span>Send Message</span>
             </>
           )}
         </button>
@@ -301,7 +313,7 @@ const ContactForm = React.memo(() => {
       </div>
     </div>
   );
-});
+};
 
 ContactForm.displayName = 'ContactForm';
 
