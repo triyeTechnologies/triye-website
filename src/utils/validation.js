@@ -1,108 +1,109 @@
-// Form validation utilities
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const validateEmail = (email) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-};
-
-export const validatePhone = (phone) => {
-  // Allow various phone formats
-  const phoneRegex = /^[\+]?[\d\s\-\(\)]{10,}$/;
-  return phoneRegex.test(phone.replace(/\s/g, ''));
+  if (!email || email.trim() === '') {
+    return { isValid: false, error: 'Email is required' };
+  }
+  
+  if (!EMAIL_REGEX.test(email.trim())) {
+    return { isValid: false, error: 'Please enter a valid email address' };
+  }
+  
+  return { isValid: true, error: '' };
 };
 
 export const validateName = (name) => {
-  return name.trim().length >= 2 && name.trim().length <= 50;
+  if (!name || name.trim() === '') {
+    return { isValid: false, error: 'Name is required' };
+  }
+  
+  if (name.trim().length < 2) {
+    return { isValid: false, error: 'Name must be at least 2 characters long' };
+  }
+  
+  if (name.trim().length > 100) {
+    return { isValid: false, error: 'Name must be less than 100 characters' };
+  }
+  
+  return { isValid: true, error: '' };
+};
+
+export const validateSubject = (subject) => {
+  if (!subject || subject.trim() === '') {
+    return { isValid: false, error: 'Subject is required' };
+  }
+  
+  if (subject.trim().length < 5) {
+    return { isValid: false, error: 'Subject must be at least 5 characters long' };
+  }
+  
+  if (subject.trim().length > 200) {
+    return { isValid: false, error: 'Subject must be less than 200 characters' };
+  }
+  
+  return { isValid: true, error: '' };
 };
 
 export const validateMessage = (message) => {
-  return message.trim().length >= 10 && message.trim().length <= 1000;
+  if (!message || message.trim() === '') {
+    return { isValid: false, error: 'Message is required' };
+  }
+  
+  if (message.trim().length < 10) {
+    return { isValid: false, error: 'Message must be at least 10 characters long' };
+  }
+  
+  if (message.trim().length > 2000) {
+    return { isValid: false, error: 'Message must be less than 2000 characters' };
+  }
+  
+  return { isValid: true, error: '' };
 };
 
-export const validateForm = (formData) => {
+export const validateContactForm = (formData) => {
   const errors = {};
-
-  // Name validation
-  if (!formData.name || !formData.name.trim()) {
-    errors.name = 'Name is required';
-  } else if (!validateName(formData.name)) {
-    errors.name = 'Name must be between 2 and 50 characters';
-  }
-
-  // Email validation
-  if (!formData.email || !formData.email.trim()) {
-    errors.email = 'Email is required';
-  } else if (!validateEmail(formData.email)) {
-    errors.email = 'Please enter a valid email address';
-  }
-
-  // Phone validation (optional but if provided, must be valid)
-  if (formData.phone && formData.phone.trim() && !validatePhone(formData.phone)) {
-    errors.phone = 'Please enter a valid phone number';
-  }
-
-  // Message validation
-  if (!formData.message || !formData.message.trim()) {
-    errors.message = 'Message is required';
-  } else if (!validateMessage(formData.message)) {
-    errors.message = 'Message must be between 10 and 1000 characters';
-  }
-
-  // Company validation (optional, but if provided, check length)
-  if (formData.company && formData.company.trim().length > 100) {
-    errors.company = 'Company name is too long';
-  }
-
-  return errors;
-};
-
-// Sanitize input data
-export const sanitizeInput = (input) => {
-  if (typeof input !== 'string') return input;
+  let isValid = true;
   
-  return input
-    .trim()
-    .replace(/[<>]/g, '') // Remove potential HTML tags
-    .substring(0, 1000); // Limit length
-};
-
-// Format phone number for display
-export const formatPhoneNumber = (phone) => {
-  const cleaned = phone.replace(/\D/g, '');
-  const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
-  
-  if (match) {
-    return `(${match[1]}) ${match[2]}-${match[3]}`;
+  const nameValidation = validateName(formData.name);
+  if (!nameValidation.isValid) {
+    errors.name = nameValidation.error;
+    isValid = false;
   }
   
-  return phone;
+  const emailValidation = validateEmail(formData.email);
+  if (!emailValidation.isValid) {
+    errors.email = emailValidation.error;
+    isValid = false;
+  }
+  
+  const subjectValidation = validateSubject(formData.subject);
+  if (!subjectValidation.isValid) {
+    errors.subject = subjectValidation.error;
+    isValid = false;
+  }
+  
+  const messageValidation = validateMessage(formData.message);
+  if (!messageValidation.isValid) {
+    errors.message = messageValidation.error;
+    isValid = false;
+  }
+  
+  return { isValid, errors };
 };
 
-// Check if form has changes
-export const hasFormChanged = (formData, initialData) => {
-  return Object.keys(formData).some(key => 
-    formData[key] !== initialData[key]
-  );
+export const sanitizeInput = (text) => {
+  if (!text) return '';
+  
+  return text
+    .replace(/[<>]/g, '')
+    .trim();
 };
 
-// Clear form data
-export const clearFormData = () => ({
-  name: '',
-  email: '',
-  company: '',
-  phone: '',
-  message: '',
-  interest: 'general'
-});
-
-export default {
-  validateEmail,
-  validatePhone,
-  validateName,
-  validateMessage,
-  validateForm,
-  sanitizeInput,
-  formatPhoneNumber,
-  hasFormChanged,
-  clearFormData
+export const formatFormData = (formData) => {
+  return {
+    name: sanitizeInput(formData.name),
+    email: sanitizeInput(formData.email),
+    subject: sanitizeInput(formData.subject),
+    message: sanitizeInput(formData.message),
+  };
 };
