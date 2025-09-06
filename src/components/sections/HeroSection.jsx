@@ -31,17 +31,17 @@ const HeroSection = ({ isLoaded, onPlayVideo }) => {
       </div>
       
       <ParticleBackground particleCount={window.innerWidth < 768 ? 25 : 40} />
-
+      
       <div className="relative z-10 text-center max-w-6xl mx-auto px-4 sm:px-6">
         <div className={`transform transition-all duration-1500 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
-          <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white mb-4 sm:mb-6 leading-tight">
+          <h1 className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white mb-2 sm:mb-4 leading-tight">
             The Future of
-            <span className="block bg-gradient-to-r from-emerald-400 via-blue-400 to-purple-400 bg-clip-text text-transparent animate-pulse">
+            <span className="block bg-gradient-to-r from-emerald-400 via-blue-400 to-purple-400 bg-clip-text text-transparent animate-pulse hero-subheading">
               Smart Security
             </span>
           </h1>
           
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 mb-6 sm:mb-8 max-w-4xl mx-auto leading-relaxed px-2">
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-200 mb-6 sm:mb-8 max-w-4xl mx-auto leading-relaxed px-2">
             Revolutionary AI-powered surveillance system that detects criminal activity in real-time, 
             tracks suspects across multiple cameras, and coordinates with law enforcement instantly.
           </p>
@@ -57,7 +57,7 @@ const HeroSection = ({ isLoaded, onPlayVideo }) => {
           </div>
         </div>
       </div>
-
+      
       <button 
         onClick={scrollToNextSection}
         className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce text-white/60 hover:text-white/80 transition-colors duration-200 focus:outline-none focus:ring-0"
