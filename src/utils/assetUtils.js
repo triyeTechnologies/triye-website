@@ -1,3 +1,6 @@
+// Get the base URL from Vite configuration
+const BASE_URL = import.meta.env.BASE_URL || '/';
+
 // Utility for handling asset paths in production
 export const getAssetPath = (path) => {
   // Remove leading slash if present
@@ -5,7 +8,7 @@ export const getAssetPath = (path) => {
   
   // In production, use the base path
   if (import.meta.env.PROD) {
-    const baseUrl = import.meta.env.BASE_URL || '/triye-website/';
+    
     return `${baseUrl}${cleanPath}`;
   }
   
