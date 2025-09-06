@@ -5,7 +5,8 @@ export const getAssetPath = (path) => {
   
   // In production, use the base path
   if (import.meta.env.PROD) {
-    return `${import.meta.env.BASE_URL}${cleanPath}`;
+    const baseUrl = import.meta.env.BASE_URL || '/triye-website/';
+    return `${baseUrl}${cleanPath}`;
   }
   
   // In development, use regular path
