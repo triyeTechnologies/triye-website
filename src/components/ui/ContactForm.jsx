@@ -50,9 +50,9 @@ const ContactForm = () => {
       const emailjs = await import('@emailjs/browser');
       
       // EmailJS configuration - Replace with your actual IDs
-      const serviceId = 'YOUR_SERVICE_ID'; // Replace with your EmailJS service ID
-      const templateId = 'YOUR_TEMPLATE_ID'; // Replace with your EmailJS template ID
-      const publicKey = 'YOUR_PUBLIC_KEY'; // Replace with your EmailJS public key
+      const serviceId = 'service_sr3rvk8'; // Replace with your EmailJS service ID
+      const templateId = 'template_ggkwvij'; // Replace with your EmailJS template ID
+      const publicKey = 'HR7HJxrWqCSXN0acf'; // Replace with your EmailJS public key
 
       const templateParams = {
         from_name: formData.name,
@@ -313,7 +313,7 @@ const ContactForm = () => {
       </div>
     </div>
   );
-});
+};
 
 ContactForm.displayName = 'ContactForm';
 
