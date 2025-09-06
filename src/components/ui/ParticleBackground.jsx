@@ -10,10 +10,10 @@ const ParticleBackground = ({ particleCount = 50, connectionDistance = 100 }) =>
     constructor(canvas) {
       this.canvas = canvas;
       this.reset();
-      this.size = Math.random() * 2 + 1;
+      this.size = Math.random() * 2 + 1.5; // Slightly larger particles
       this.speedX = (Math.random() - 0.5) * 1;
       this.speedY = (Math.random() - 0.5) * 1;
-      this.opacity = Math.random() * 0.5 + 0.2;
+      this.opacity = Math.random() * 0.4 + 0.4; // Higher base opacity
       this.maxOpacity = this.opacity;
     }
 
@@ -36,17 +36,24 @@ const ParticleBackground = ({ particleCount = 50, connectionDistance = 100 }) =>
       const distance = Math.sqrt(dx * dx + dy * dy);
       
       if (distance < 100) {
-        this.opacity = Math.min(this.maxOpacity * 2, 1);
+        this.opacity = Math.min(this.maxOpacity * 2, 0.9);
       } else {
         this.opacity = this.maxOpacity;
       }
     }
 
     draw(ctx) {
+      // Draw particle with better visibility
       ctx.fillStyle = `rgba(102, 126, 234, ${this.opacity})`;
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
       ctx.fill();
+      
+      // Add a subtle glow effect
+      ctx.shadowColor = `rgba(102, 126, 234, ${this.opacity * 0.5})`;
+      ctx.shadowBlur = 4;
+      ctx.fill();
+      ctx.shadowBlur = 0; // Reset shadow
     }
   }, []);
 
@@ -80,9 +87,10 @@ const ParticleBackground = ({ particleCount = 50, connectionDistance = 100 }) =>
         const distance = Math.sqrt(dx * dx + dy * dy);
 
         if (distance < connectionDistance) {
-          const opacity = (1 - distance / connectionDistance) * 0.2;
+          // Make lines more visible with higher opacity
+          const opacity = (1 - distance / connectionDistance) * 0.4; // Increased from 0.2
           ctx.strokeStyle = `rgba(102, 126, 234, ${opacity})`;
-          ctx.lineWidth = 0.5;
+          ctx.lineWidth = 1; // Increased line width
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
@@ -102,14 +110,14 @@ const ParticleBackground = ({ particleCount = 50, connectionDistance = 100 }) =>
     
     const particles = particlesRef.current;
     
+    // Draw connections first (behind particles)
+    drawConnections(ctx, particles);
+    
+    // Then draw particles
     particles.forEach(particle => {
       particle.update();
       particle.draw(ctx);
     });
-
-    if (performance.now() % 2 < 1) {
-      drawConnections(ctx, particles);
-    }
 
     animationRef.current = requestAnimationFrame(animate);
   }, [drawConnections]);
