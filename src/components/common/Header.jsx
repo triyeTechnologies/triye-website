@@ -1,90 +1,109 @@
 import React from 'react';
-import { Play, ChevronDown } from 'lucide-react';
-import ParticleBackground from '../ui/ParticleBackground';
+import { Menu, X } from 'lucide-react';
+import { NAVIGATION_ITEMS, SITE_CONFIG } from '../../data/constants';
 import { OptimizedImage } from '../../utils/imageUtils.jsx';
 import { ASSETS } from '../../utils/assetUtils';
 
-const HeroSection = ({ isLoaded, onPlayVideo }) => {
-  const scrollToNextSection = () => {
-    const visionSection = document.getElementById('vision');
-    if (visionSection) {
-      const offsetTop = visionSection.offsetTop - 100;
+const Header = ({ activeSection, mobileMenuOpen, setMobileMenuOpen }) => {
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const offsetTop = element.offsetTop - 100;
       window.scrollTo({
         top: Math.max(0, offsetTop),
         behavior: 'smooth'
       });
     }
+    setMobileMenuOpen(false);
   };
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      <div className="absolute inset-0">
-        <OptimizedImage
-          src={ASSETS.heroSection}
-          alt="Hero background"
-          className="w-full h-full object-cover"
-          placeholderType="hero"
-        />
-        <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-blue-900/60 to-purple-900/70"></div>
-      </div>
-      
-      <ParticleBackground particleCount={window.innerWidth < 768 ? 30 : 50} />
-      
-      {[...Array(8)].map((_, i) => (
-        <div
-          key={i}
-          className="absolute animate-float opacity-10 pointer-events-none"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            animationDelay: `${i * 0.7}s`,
-            animationDuration: `${4 + i * 0.5}s`,
-            transform: `rotate(${Math.random() * 360}deg)`,
-          }}
-        >
-          <div className={`w-12 h-12 sm:w-16 sm:h-16 ${
-            i % 3 === 0 ? 'bg-gradient-to-r from-emerald-400 to-blue-500' :
-            i % 3 === 1 ? 'bg-gradient-to-r from-red-400 to-pink-500' :
-            'bg-gradient-to-r from-blue-400 to-purple-500'
-          } rounded-2xl transform rotate-45 shadow-2xl`}></div>
-        </div>
-      ))}
-
-      <div className="relative z-10 text-center max-w-6xl mx-auto px-4 sm:px-6">
-        <div className={`transform transition-all duration-1500 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
-          <h1 className="text-4xl sm:text-6xl lg:text-8xl font-black text-white mb-6 leading-tight">
-            The Future of
-            <span className="block bg-gradient-to-r from-emerald-400 via-blue-400 to-purple-400 bg-clip-text text-transparent animate-pulse">
-              Smart Security
-            </span>
-          </h1>
-          
-          <p className="text-lg sm:text-xl lg:text-2xl text-gray-200 mb-8 max-w-4xl mx-auto leading-relaxed">
-            Revolutionary AI-powered surveillance system that detects criminal activity in real-time, 
-            tracks suspects across multiple cameras, and coordinates with law enforcement instantly.
-          </p>
-          
-          <div className="flex justify-center">
-            <button 
-              onClick={onPlayVideo}
-              className="bg-gradient-to-r from-emerald-600 to-blue-600 text-white px-6 py-3 rounded-lg text-base font-semibold flex items-center justify-center space-x-2 hover:from-emerald-700 hover:to-blue-700 transition-all duration-200"
-            >
-              <Play className="w-4 h-4" />
-              <span>Explore Our Vision</span>
-            </button>
+    <header className="fixed w-full top-0 z-50 bg-white/90 backdrop-blur-xl border-b border-gray-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-1 cursor-pointer" onClick={() => scrollToSection('home')}>
+            <OptimizedImage 
+              src={ASSETS.logo}
+              alt="Triye Logo" 
+              className="w-12 h-12 sm:w-16 sm:h-16"
+              placeholderType="logo"
+              width={64}
+              height={64}
+            />
+            <OptimizedImage 
+              src={ASSETS.triyeLogo}
+              alt="TRIYE" 
+              className="h-8 sm:h-10 w-auto"
+              placeholderType="logo"
+            />
           </div>
-        </div>
-      </div>
+          
+          <nav className="hidden lg:flex items-center space-x-6">
+            {NAVIGATION_ITEMS.map((item) => (
+              <button
+                key={item.name}
+                onClick={() => scrollToSection(item.id)}
+                className={`text-base font-medium transition-colors duration-200 hover:text-blue-600 focus:outline-none ${
+                  activeSection === item.id ? 'text-blue-600' : 'text-gray-700'
+                }`}
+                style={{ 
+                  background: 'none',
+                  border: 'none',
+                  padding: '12px 16px',
+                  boxShadow: 'none'
+                }}
+              >
+                {item.name}
+              </button>
+            ))}
+            <button
+              onClick={() => scrollToSection('contact')}
+              className="bg-gradient-to-r from-emerald-500 to-blue-500 text-white px-6 py-3 rounded-lg font-medium min-h-[48px] flex items-center hover:from-emerald-600 hover:to-blue-600 transition-all duration-200"
+            >
+              Contact Us
+            </button>
+          </nav>
 
-      <button 
-        onClick={scrollToNextSection}
-        className="absolute bottom-4 left-1/2 transform -translate-x-1/2 animate-bounce text-white/60 hover:text-white/80 transition-colors duration-200"
-        aria-label="Scroll to next section"
-      >
-        <ChevronDown className="w-8 h-8" />
-      </button>
-    </section>
+          <button
+            className="lg:hidden p-2 rounded-md text-gray-700 hover:bg-gray-100 min-h-[48px] min-w-[48px] flex items-center justify-center"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle mobile menu"
+          >
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+
+        {mobileMenuOpen && (
+          <nav className="lg:hidden mt-4 pb-4 border-t border-gray-100">
+            <div className="flex flex-col space-y-2 pt-4">
+              {NAVIGATION_ITEMS.map((item) => (
+                <button
+                  key={item.name}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`px-4 py-3 text-base font-medium transition-colors duration-200 hover:bg-gray-50 min-h-[48px] flex items-start text-left focus:outline-none ${
+                    activeSection === item.id ? 'text-blue-600' : 'text-gray-700'
+                  }`}
+                  style={{ 
+                    background: activeSection === item.id ? 'none' : undefined,
+                    border: 'none',
+                    boxShadow: 'none'
+                  }}
+                >
+                  {item.name}
+                </button>
+              ))}
+              <button
+                onClick={() => scrollToSection('contact')}
+                className="bg-gradient-to-r from-emerald-500 to-blue-500 text-white px-4 py-3 rounded-lg font-medium mt-2 min-h-[48px] flex items-center justify-center hover:from-emerald-600 hover:to-blue-600 transition-all duration-200"
+              >
+                Contact Us
+              </button>
+            </div>
+          </nav>
+        )}
+      </div>
+    </header>
   );
 };
 
-export default HeroSection;
+export default Header;
