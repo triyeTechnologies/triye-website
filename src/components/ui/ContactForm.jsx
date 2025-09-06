@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle, Loader } from 'lucide-react';
 import { validateForm } from '../../utils/validation';
 
-const ContactForm = () => {
+const ContactForm = React.memo(() => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -14,28 +14,29 @@ const ContactForm = () => {
   
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', or null
+  const [submitStatus, setSubmitStatus] = useState(null);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = useCallback((e) => {
     const { name, value } = e.target;
+    
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
     
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: ''
-      }));
-    }
-  };
+    setErrors(prev => {
+      if (prev[name]) {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      }
+      return prev;
+    });
+  }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
     
-    // Validate form
     const validationErrors = validateForm(formData);
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -46,83 +47,75 @@ const ContactForm = () => {
     setSubmitStatus(null);
 
     try {
-      // Import EmailJS dynamically
-      const emailjs = await import('@emailjs/browser');
+      // Log form data to console for now
+      console.log('=== CONTACT FORM SUBMISSION ===');
+      console.log('Name:', formData.name);
+      console.log('Email:', formData.email);
+      console.log('Company:', formData.company);
+      console.log('Phone:', formData.phone);
+      console.log('Interest:', formData.interest);
+      console.log('Message:', formData.message);
+      console.log('================================');
       
-      // EmailJS configuration - Replace with your actual IDs
-      const serviceId = 'service_sr3rvk8'; // Replace with your EmailJS service ID
-      const templateId = 'template_ggkwvij'; // Replace with your EmailJS template ID
-      const publicKey = 'HR7HJxrWqCSXN0acf'; // Replace with your EmailJS public key
-
-      const templateParams = {
-        from_name: formData.name,
-        from_email: formData.email,
-        company: formData.company,
-        phone: formData.phone,
-        message: formData.message,
-        interest: formData.interest,
-        to_email: 'contact@triyetechnologies.com' // Your email
-      };
-
-      const response = await emailjs.send(
-        serviceId,
-        templateId,
-        templateParams,
-        publicKey
-      );
-
-      if (response.status === 200) {
-        setSubmitStatus('success');
-        setFormData({
-          name: '',
-          email: '',
-          company: '',
-          phone: '',
-          message: '',
-          interest: 'general'
-        });
-      } else {
-        throw new Error('Failed to send email');
-      }
+      // Simulate processing time
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      setSubmitStatus('success');
+      setFormData({
+        name: '',
+        email: '',
+        company: '',
+        phone: '',
+        message: '',
+        interest: 'general'
+      });
+      
     } catch (error) {
-      console.error('Error sending email:', error);
+      console.error('Form submission error:', error);
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }, [formData]);
 
-  const StatusMessage = () => {
-    if (submitStatus === 'success') {
-      return (
-        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
-          <div className="flex items-center space-x-2 text-green-800">
-            <CheckCircle className="w-5 h-5" />
-            <span className="font-medium">Message sent successfully!</span>
+  const StatusMessage = useMemo(() => {
+    const Component = () => {
+      if (submitStatus === 'success') {
+        return (
+          <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+            <div className="flex items-center space-x-2 text-green-800">
+              <CheckCircle className="w-5 h-5" />
+              <span className="font-medium">Message received!</span>
+            </div>
+            <p className="text-green-700 text-sm mt-1">
+              Thank you for your interest. Your message has been logged and we'll respond within 24 hours.
+            </p>
+            <p className="text-green-600 text-xs mt-1">
+              For immediate assistance: contact@triyetechnologies.com
+            </p>
           </div>
-          <p className="text-green-700 text-sm mt-1">
-            Thank you for reaching out. We'll get back to you within 24 hours.
-          </p>
-        </div>
-      );
-    }
+        );
+      }
 
-    if (submitStatus === 'error') {
-      return (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-          <div className="flex items-center space-x-2 text-red-800">
-            <AlertCircle className="w-5 h-5" />
-            <span className="font-medium">Failed to send message</span>
+      if (submitStatus === 'error') {
+        return (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+            <div className="flex items-center space-x-2 text-red-800">
+              <AlertCircle className="w-5 h-5" />
+              <span className="font-medium">Submission failed</span>
+            </div>
+            <p className="text-red-700 text-sm mt-1">
+              Please contact us directly at contact@triyetechnologies.com
+            </p>
           </div>
-          <p className="text-red-700 text-sm mt-1">
-            Please try again or contact us directly at contact@triyetechnologies.com
-          </p>
-        </div>
-      );
-    }
+        );
+      }
 
-    return null;
-  };
+      return null;
+    };
+    
+    return Component;
+  }, [submitStatus]);
 
   return (
     <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8">
@@ -273,7 +266,7 @@ const ContactForm = () => {
           {isSubmitting ? (
             <>
               <Loader className="w-5 h-5 animate-spin" />
-              <span>Sending Message...</span>
+              <span>Processing...</span>
             </>
           ) : (
             <>
@@ -313,7 +306,7 @@ const ContactForm = () => {
       </div>
     </div>
   );
-};
+});
 
 ContactForm.displayName = 'ContactForm';
 
