@@ -24,6 +24,8 @@ const HeroSection = ({ isLoaded, onPlayVideo }) => {
           alt="Hero background"
           className="w-full h-full object-cover"
           placeholderType="hero"
+          loading="eager" // Add this to prioritize loading
+          onLoad={() => {}} // Add empty onLoad to prevent flashing
         />
         <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-blue-900/60 to-purple-900/70"></div>
       </div>
