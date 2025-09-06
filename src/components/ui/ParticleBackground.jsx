@@ -10,10 +10,10 @@ const ParticleBackground = ({ particleCount = 50, connectionDistance = 100 }) =>
     constructor(canvas) {
       this.canvas = canvas;
       this.reset();
-      this.size = Math.random() * 2 + 1.5; // Slightly larger particles
+      this.size = Math.random() * 3 + 2; // Larger particles (2-5px)
       this.speedX = (Math.random() - 0.5) * 1;
       this.speedY = (Math.random() - 0.5) * 1;
-      this.opacity = Math.random() * 0.4 + 0.4; // Higher base opacity
+      this.opacity = Math.random() * 0.4 + 0.6; // Higher base opacity (0.6-1.0)
       this.maxOpacity = this.opacity;
     }
 
@@ -36,22 +36,22 @@ const ParticleBackground = ({ particleCount = 50, connectionDistance = 100 }) =>
       const distance = Math.sqrt(dx * dx + dy * dy);
       
       if (distance < 100) {
-        this.opacity = Math.min(this.maxOpacity * 2, 0.9);
+        this.opacity = Math.min(this.maxOpacity * 1.5, 1.0);
       } else {
         this.opacity = this.maxOpacity;
       }
     }
 
     draw(ctx) {
-      // Draw particle with better visibility
+      // Draw particle with enhanced visibility
       ctx.fillStyle = `rgba(102, 126, 234, ${this.opacity})`;
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
       ctx.fill();
       
       // Add a subtle glow effect
-      ctx.shadowColor = `rgba(102, 126, 234, ${this.opacity * 0.5})`;
-      ctx.shadowBlur = 4;
+      ctx.shadowColor = `rgba(102, 126, 234, ${this.opacity * 0.8})`;
+      ctx.shadowBlur = 6;
       ctx.fill();
       ctx.shadowBlur = 0; // Reset shadow
     }
@@ -87,10 +87,10 @@ const ParticleBackground = ({ particleCount = 50, connectionDistance = 100 }) =>
         const distance = Math.sqrt(dx * dx + dy * dy);
 
         if (distance < connectionDistance) {
-          // Make lines more visible with higher opacity
-          const opacity = (1 - distance / connectionDistance) * 0.4; // Increased from 0.2
+          // Enhanced line visibility
+          const opacity = (1 - distance / connectionDistance) * 0.6; // Increased from 0.4
           ctx.strokeStyle = `rgba(102, 126, 234, ${opacity})`;
-          ctx.lineWidth = 1; // Increased line width
+          ctx.lineWidth = 1.5; // Increased line width
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
@@ -129,7 +129,9 @@ const ParticleBackground = ({ particleCount = 50, connectionDistance = 100 }) =>
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    particlesRef.current = Array.from({ length: particleCount }, () => new Particle(canvas));
+    // Reduced particle count for mobile
+    const effectiveParticleCount = window.innerWidth < 768 ? Math.min(particleCount, 25) : particleCount;
+    particlesRef.current = Array.from({ length: effectiveParticleCount }, () => new Particle(canvas));
 
     animationRef.current = requestAnimationFrame(animate);
 
