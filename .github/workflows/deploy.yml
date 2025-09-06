@@ -28,6 +28,8 @@ jobs:
       
     - name: Build
       run: npm run build
+      env:
+        BASE_URL: /triye-website/
       
     - name: Setup Pages
       uses: actions/configure-pages@v4
