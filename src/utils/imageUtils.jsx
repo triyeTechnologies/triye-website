@@ -69,25 +69,40 @@ export const OptimizedImage = ({
   className = '',
   width,
   height,
-  loading = 'lazy',
   ...props 
 }) => {
-  const [currentSrc, setCurrentSrc] = React.useState(src);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [currentSrc, setCurrentSrc] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(true);
   const [hasError, setHasError] = React.useState(false);
   
   React.useEffect(() => {
-    if (src) {
-      setCurrentSrc(src);
-    }
-  }, [src]);
+    loadImageWithFallback(src, fallback, placeholderType)
+      .then((finalSrc) => {
+        setCurrentSrc(finalSrc);
+        setIsLoading(false);
+      })
+      .catch(() => {
+        setCurrentSrc(getPlaceholderImage(placeholderType, width, height));
+        setIsLoading(false);
+        setHasError(true);
+      });
+  }, [src, fallback, placeholderType, width, height]);
+  
+  if (isLoading) {
+    return (
+      <div 
+        className={`bg-gray-200 animate-pulse ${className}`}
+        style={{ width, height }}
+        aria-label="Loading image..."
+      />
+    );
+  }
   
   return (
     <img
       src={currentSrc}
       alt={alt}
       className={className}
-      loading={loading}
       onError={() => {
         if (!hasError) {
           setCurrentSrc(getPlaceholderImage(placeholderType, width, height));
