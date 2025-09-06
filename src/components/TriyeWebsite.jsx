@@ -135,7 +135,7 @@ const TriyeWebsite = () => {
             muted
             preload="metadata"
           >
-            <source src="/videos/demo.mp4" type="video/mp4" />
+            <source src={ASSETS.demoVideo} type="video/mp4" />
             <p className="text-white text-center p-4">Your browser doesn't support video playback.</p>
           </video>
         </Modal>
