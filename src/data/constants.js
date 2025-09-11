@@ -275,8 +275,8 @@ export const FOUNDERS = [
   {
     name: 'Akhilesh N Naidu',
     role: 'COO & Co-founder',
-    image: null,
-    hasImage: false,
+    image: getImagePath('akhi.png'),
+    hasImage: true,
     gradient: 'from-purple-500 to-pink-500'
   }
 ];
