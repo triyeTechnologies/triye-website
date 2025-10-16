@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Triye - Revolutionary AI Security Solutions
 
 A modern, interactive website built with React, Vite, and Tailwind CSS showcasing AI-powered security technology.
@@ -146,3 +147,6 @@ This project is proprietary software owned by Triye.
 For questions or issues, contact:
 - Business: partnerships@triye.com
 - Technical: tech@triye.com
+=======
+# triye-website
+>>>>>>> 658f34442f373179ecefc5338ddb539db5a995da
