@@ -27,11 +27,9 @@ const EmailForm = ({ onClose }) => {
     setError(null);
 
     try {
-      console.log('Submitting message:', formData);
       await database.insertMessage(formData);
-      console.log('Message submitted successfully');
       setSubmitted(true);
-      
+
       // Close form after 2 seconds
       setTimeout(() => {
         onClose();
@@ -45,11 +43,11 @@ const EmailForm = ({ onClose }) => {
 
   if (submitted) {
     return (
-      <div 
+      <div
         className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
         onClick={onClose}
       >
-        <div 
+        <div
           className="bg-white rounded-2xl p-8 max-w-md w-full text-center shadow-2xl"
           onClick={(e) => e.stopPropagation()}
         >
@@ -66,11 +64,11 @@ const EmailForm = ({ onClose }) => {
   }
 
   return (
-    <div 
+    <div
       className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
       onClick={onClose}
     >
-      <div 
+      <div
         className="bg-white rounded-2xl p-6 max-w-2xl w-full shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
@@ -175,11 +173,10 @@ const EmailForm = ({ onClose }) => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`w-full py-3 px-6 rounded-lg font-semibold text-white transition-all duration-200 flex items-center justify-center space-x-2 ${
-              isSubmitting 
-                ? 'bg-gray-400 cursor-not-allowed' 
+            className={`w-full py-3 px-6 rounded-lg font-semibold text-white transition-all duration-200 flex items-center justify-center space-x-2 ${isSubmitting
+                ? 'bg-gray-400 cursor-not-allowed'
                 : 'bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 transform hover:scale-105'
-            }`}
+              }`}
           >
             {isSubmitting ? (
               <>

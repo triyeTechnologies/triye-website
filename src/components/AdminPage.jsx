@@ -1,20 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Lock, 
-  Eye, 
-  EyeOff, 
-  Mail, 
-  Phone, 
-  User, 
-  Calendar, 
+import {
+  Lock,
+  Eye,
+  EyeOff,
+  Mail,
+  Phone,
+  User,
+  Calendar,
   MessageSquare,
   Trash2,
   LogOut,
-  Shield
+  Shield,
+  AlertTriangle,
+  X
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { auth, database } from '../lib/supabase';
 
-const AdminPage = ({ onBackToHome }) => {
+const AdminPage = () => {
+  const navigate = useNavigate();
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   const [loginData, setLoginData] = useState({ email: '', password: '' });
@@ -22,13 +27,13 @@ const AdminPage = ({ onBackToHome }) => {
   const [messages, setMessages] = useState([]);
   const [selectedMessage, setSelectedMessage] = useState(null);
   const [loginError, setLoginError] = useState('');
+  const [deleteConfirmation, setDeleteConfirmation] = useState(null);
 
   useEffect(() => {
     checkAuthStatus();
-    
+
     // Listen for auth state changes
     const { data: { subscription } } = auth.onAuthStateChange((event, session) => {
-      console.log('Auth state changed:', event, session);
       setIsAuthenticated(!!session);
       if (session) {
         loadMessages();
@@ -45,7 +50,6 @@ const AdminPage = ({ onBackToHome }) => {
   const checkAuthStatus = async () => {
     try {
       const session = await auth.getSession();
-      console.log('Current session:', session);
       setIsAuthenticated(!!session);
       if (session) {
         await loadMessages();
@@ -59,9 +63,7 @@ const AdminPage = ({ onBackToHome }) => {
 
   const loadMessages = async () => {
     try {
-      console.log('Loading messages...');
       const data = await database.getMessages();
-      console.log('Messages loaded:', data);
       setMessages(data);
     } catch (error) {
       console.error('Error loading messages:', error);
@@ -71,11 +73,9 @@ const AdminPage = ({ onBackToHome }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoginError('');
-    
+
     try {
-      console.log('Attempting login with:', loginData.email);
       await auth.signIn(loginData.email, loginData.password);
-      console.log('Login successful');
       // Auth state change will handle the rest
     } catch (error) {
       console.error('Login error:', error);
@@ -85,7 +85,6 @@ const AdminPage = ({ onBackToHome }) => {
 
   const handleLogout = async () => {
     try {
-      console.log('Logging out...');
       await auth.signOut();
       setLoginData({ email: '', password: '' });
     } catch (error) {
@@ -93,17 +92,22 @@ const AdminPage = ({ onBackToHome }) => {
     }
   };
 
-  const deleteMessage = async (messageId) => {
-    if (!window.confirm('Are you sure you want to delete this message?')) {
-      return;
-    }
+  const handleDeleteClick = (messageId) => {
+    setDeleteConfirmation(messageId);
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteConfirmation) return;
 
     try {
-      console.log('Deleting message:', messageId);
-      await database.deleteMessage(messageId);
-      setMessages(messages.filter(msg => msg.id !== messageId));
-      setSelectedMessage(null);
-      console.log('Message deleted successfully');
+      await database.deleteMessage(deleteConfirmation);
+      setMessages(messages.filter(msg => msg.id !== deleteConfirmation));
+
+      if (selectedMessage?.id === deleteConfirmation) {
+        setSelectedMessage(null);
+      }
+
+      setDeleteConfirmation(null);
     } catch (error) {
       console.error('Error deleting message:', error);
       alert('Failed to delete message. Please try again.');
@@ -151,7 +155,7 @@ const AdminPage = ({ onBackToHome }) => {
               <input
                 type="email"
                 value={loginData.email}
-                onChange={(e) => setLoginData({...loginData, email: e.target.value})}
+                onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                 placeholder="admin@triye.com"
                 required
@@ -166,7 +170,7 @@ const AdminPage = ({ onBackToHome }) => {
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={loginData.password}
-                  onChange={(e) => setLoginData({...loginData, password: e.target.value})}
+                  onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
                   className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   placeholder="Enter password"
                   required
@@ -195,7 +199,7 @@ const AdminPage = ({ onBackToHome }) => {
 
           <div className="mt-6 text-center">
             <button
-              onClick={onBackToHome}
+              onClick={() => navigate('/')}
               className="text-blue-600 hover:text-blue-700 text-sm font-medium"
             >
               ← Back to Website
@@ -222,7 +226,7 @@ const AdminPage = ({ onBackToHome }) => {
             </div>
             <div className="flex items-center space-x-4">
               <button
-                onClick={onBackToHome}
+                onClick={() => navigate('/')}
                 className="text-gray-600 hover:text-gray-700 font-medium"
               >
                 View Website
@@ -260,11 +264,10 @@ const AdminPage = ({ onBackToHome }) => {
                       <div
                         key={message.id}
                         onClick={() => setSelectedMessage(message)}
-                        className={`p-4 cursor-pointer transition-colors duration-200 ${
-                          selectedMessage?.id === message.id 
-                            ? 'bg-blue-50 border-r-4 border-blue-500' 
-                            : 'hover:bg-gray-50'
-                        }`}
+                        className={`p-4 cursor-pointer transition-colors duration-200 ${selectedMessage?.id === message.id
+                          ? 'bg-blue-50 border-r-4 border-blue-500'
+                          : 'hover:bg-gray-50'
+                          }`}
                       >
                         <div className="flex items-start justify-between mb-2">
                           <h3 className="font-semibold text-gray-900 truncate pr-2">
@@ -322,7 +325,7 @@ const AdminPage = ({ onBackToHome }) => {
                       </div>
                     </div>
                     <button
-                      onClick={() => deleteMessage(selectedMessage.id)}
+                      onClick={() => handleDeleteClick(selectedMessage.id)}
                       className="flex items-center space-x-2 bg-red-100 text-red-700 px-3 py-2 rounded-lg hover:bg-red-200 transition-colors duration-200"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -358,6 +361,43 @@ const AdminPage = ({ onBackToHome }) => {
           </div>
         </div>
       </div>
+      {/* Delete Confirmation Modal */}
+      {deleteConfirmation && (
+        <div
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+          onClick={() => setDeleteConfirmation(null)}
+        >
+          <div
+            className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-100 mx-auto mb-4">
+              <AlertTriangle className="w-6 h-6 text-red-600" />
+            </div>
+
+            <h3 className="text-xl font-bold text-gray-900 text-center mb-2">Delete Message?</h3>
+            <p className="text-gray-600 text-center mb-6">
+              Are you sure you want to delete this message? This action cannot be undone.
+            </p>
+
+            <div className="flex space-x-3">
+              <button
+                onClick={() => setDeleteConfirmation(null)}
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors duration-200"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors duration-200 flex items-center justify-center space-x-2"
+              >
+                <Trash2 className="w-4 h-4" />
+                <span>Delete</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
