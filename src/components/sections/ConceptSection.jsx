@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Brain, Network, Zap, Target, BarChart3, Lock, X } from 'lucide-react';
 
 const ConceptSection = () => {
@@ -122,94 +123,128 @@ const ConceptSection = () => {
     ];
 
     return (
-        <section id="concept" className="py-12 sm:py-20 bg-white">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6">
-                <div className="text-center mb-10 sm:mb-12">
-                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">Core Technology Concepts</h2>
-                    <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto">
+        <section id="concept" className="py-12 sm:py-24 bg-gray-950 relative overflow-hidden">
+            {/* Cyber Grid Background */}
+            <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-10 pointer-events-none"></div>
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+                <div className="text-center mb-10 sm:mb-16">
+                    <motion.h2
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4"
+                    >
+                        Core Technology Concepts
+                    </motion.h2>
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                        className="text-base sm:text-lg text-gray-400 max-w-3xl mx-auto"
+                    >
                         The foundation of our revolutionary security platform built on advanced AI and network intelligence.
-                    </p>
+                    </motion.p>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     {concepts.map((concept, index) => (
-                        <div
+                        <motion.div
                             key={index}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5, delay: index * 0.1 }}
+                            whileHover={{ scale: 1.05, y: -5 }}
                             onClick={() => setSelectedTechCard(concept)}
-                            className="bg-white rounded-3xl p-4 sm:p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-105"
+                            className="glass-cyber rounded-3xl p-4 sm:p-6 shadow-lg border border-white/5 hover:border-emerald-500/30 cursor-pointer group transition-all duration-300 relative overflow-hidden"
                         >
-                            <div className={`w-12 h-12 bg-gradient-to-r ${concept.color} rounded-2xl flex items-center justify-center mb-4 shadow-lg`}>
+                            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                            <div className={`w-12 h-12 bg-gradient-to-r ${concept.color} rounded-2xl flex items-center justify-center mb-4 shadow-[0_0_15px_rgba(0,0,0,0.3)] relative z-10 group-hover:scale-110 transition-transform duration-300`}>
                                 <concept.icon className="w-6 h-6 text-white" />
                             </div>
 
-                            <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-3">
+                            <h3 className="text-base sm:text-lg font-bold text-white mb-3 relative z-10 group-hover:text-emerald-400 transition-colors">
                                 {concept.title}
                             </h3>
 
-                            <p className="text-gray-600 leading-relaxed text-sm mb-3">
+                            <p className="text-gray-400 leading-relaxed text-sm mb-3 relative z-10">
                                 {concept.desc}
                             </p>
 
-                            <div className="text-blue-600 font-medium text-xs">
-                                Click to learn more →
+                            <div className="text-emerald-400 font-medium text-xs flex items-center relative z-10">
+                                Click to learn more <span className="ml-1 group-hover:translate-x-1 transition-transform">→</span>
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
             </div>
 
             {/* Technology Detail Modal */}
-            {selectedTechCard && (
-                <div
-                    className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
-                    onClick={() => setSelectedTechCard(null)}
-                >
-                    <div
-                        className="bg-white rounded-2xl p-4 sm:p-6 max-w-3xl w-full max-h-[85vh] overflow-y-auto scrollbar-hide shadow-2xl"
-                        onClick={(e) => e.stopPropagation()}
+            <AnimatePresence>
+                {selectedTechCard && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+                        onClick={() => setSelectedTechCard(null)}
                     >
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center space-x-3">
-                                <div className={`w-10 h-10 bg-gradient-to-r ${selectedTechCard.color} rounded-xl flex items-center justify-center shadow-lg`}>
-                                    <selectedTechCard.icon className="w-5 h-5 text-white" />
+                        <motion.div
+                            initial={{ scale: 0.9, y: 20 }}
+                            animate={{ scale: 1, y: 0 }}
+                            exit={{ scale: 0.9, y: 20 }}
+                            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                            className="glass-cyber rounded-2xl p-4 sm:p-6 max-w-3xl w-full max-h-[85vh] overflow-y-auto scrollbar-hide shadow-2xl border border-white/10"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <div className="flex items-center justify-between mb-6">
+                                <div className="flex items-center space-x-4">
+                                    <div className={`w-12 h-12 bg-gradient-to-r ${selectedTechCard.color} rounded-xl flex items-center justify-center shadow-lg box-glow`}>
+                                        <selectedTechCard.icon className="w-6 h-6 text-white" />
+                                    </div>
+                                    <h2 className="text-xl sm:text-2xl font-bold text-white">{selectedTechCard.detailContent.title}</h2>
                                 </div>
-                                <h2 className="text-xl sm:text-2xl font-bold text-gray-900">{selectedTechCard.detailContent.title}</h2>
-                            </div>
-                            <button
-                                onClick={() => setSelectedTechCard(null)}
-                                className="w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors duration-200"
-                            >
-                                <X className="w-4 h-4 text-gray-600" />
-                            </button>
-                        </div>
-
-                        <div className="space-y-4">
-                            <p className="text-base text-gray-600 leading-relaxed">
-                                {selectedTechCard.detailContent.description}
-                            </p>
-
-                            <div>
-                                <h3 className="text-lg font-bold text-gray-900 mb-3">Key Features</h3>
-                                <ul className="space-y-2">
-                                    {selectedTechCard.detailContent.features.map((feature, idx) => (
-                                        <li key={idx} className="flex items-start space-x-2">
-                                            <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
-                                            <span className="text-sm text-gray-700 leading-relaxed">{feature}</span>
-                                        </li>
-                                    ))}
-                                </ul>
+                                <button
+                                    onClick={() => setSelectedTechCard(null)}
+                                    className="w-10 h-10 bg-white/5 hover:bg-white/10 rounded-full flex items-center justify-center transition-colors duration-200 border border-white/5"
+                                >
+                                    <X className="w-5 h-5 text-gray-400 hover:text-white" />
+                                </button>
                             </div>
 
-                            <div>
-                                <h3 className="text-lg font-bold text-gray-900 mb-3">Technology Implementation</h3>
-                                <p className="text-sm text-gray-600 leading-relaxed">
-                                    {selectedTechCard.detailContent.technology}
+                            <div className="space-y-6">
+                                <p className="text-base text-gray-300 leading-relaxed border-b border-white/5 pb-4">
+                                    {selectedTechCard.detailContent.description}
                                 </p>
+
+                                <div>
+                                    <h3 className="text-lg font-bold text-emerald-400 mb-3">Key Features</h3>
+                                    <ul className="space-y-3">
+                                        {selectedTechCard.detailContent.features.map((feature, idx) => (
+                                            <li key={idx} className="flex items-start space-x-3">
+                                                <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-2.5 flex-shrink-0 box-glow"></div>
+                                                <span className="text-sm text-gray-300 leading-relaxed">{feature}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+
+                                <div className="bg-white/5 rounded-xl p-4 border border-white/5">
+                                    <h3 className="text-lg font-bold text-white mb-2">Technology Implementation</h3>
+                                    <p className="text-sm text-gray-400 leading-relaxed">
+                                        {selectedTechCard.detailContent.technology}
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            )}
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </section>
     );
 };
