@@ -58,12 +58,6 @@ const HeroSection = ({ isLoaded }) => {
                 initial="hidden"
                 animate={isLoaded ? "visible" : "hidden"}
             >
-                <motion.div variants={itemVariants} className="mb-2">
-                    <span className="inline-block py-1 px-3 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-mono tracking-wider mb-4 glass-cyber">
-                        SYSTEM ONLINE • V2.0
-                    </span>
-                </motion.div>
-
                 <motion.h1 variants={itemVariants} className="text-4xl sm:text-6xl lg:text-7xl font-black text-white mb-6 leading-tight tracking-tight">
                     The Future of
                     <span className="block mt-2 bg-gradient-to-r from-emerald-400 via-cyan-400 to-purple-500 bg-clip-text text-transparent filter drop-shadow-[0_0_10px_rgba(52,211,153,0.5)]">

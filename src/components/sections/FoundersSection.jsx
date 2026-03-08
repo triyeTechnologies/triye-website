@@ -73,7 +73,7 @@ const FoundersSection = () => {
                                         <img
                                             src={founder.image}
                                             alt={founder.name}
-                                            className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                                            className={`w-full h-full object-cover transition-all duration-500 ${founder.image === '/adi.png' ? 'object-top scale-105' : ''}`}
                                         />
                                     ) : (
                                         <div className="w-full h-full flex items-center justify-center bg-gray-800">
