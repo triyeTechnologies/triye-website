@@ -1,98 +1,49 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { User } from 'lucide-react';
 
 const FoundersSection = () => {
     const founders = [
-        {
-            name: 'Akshay R Kumar',
-            role: 'CEO & Co-founder',
-            image: '/aksh.jpg',
-            hasImage: true,
-            gradient: 'from-emerald-500 to-blue-500'
-        },
-        {
-            name: 'Aditya Belludi',
-            role: 'CTO & Co-founder',
-            image: '/adi.png',
-            hasImage: true,
-            gradient: 'from-blue-500 to-purple-500'
-        },
-        {
-            name: 'Akhilesh N Naidu',
-            role: 'COO & Co-founder',
-            image: '/akhi.png',
-            hasImage: true,
-            gradient: 'from-purple-500 to-pink-500'
-        }
+        { name: 'Akshay R Kumar',   role: 'CEO & Co-founder', image: '/aksh.jpg',  desc: 'Visionary leader driving Triye\'s mission to make Indian cities safer through AI-powered surveillance technology.' },
+        { name: 'Aditya Belludi',   role: 'CTO & Co-founder', image: '/adi.png',   desc: 'Technical architect behind Traced\'s real-time AI detection engine and camera network intelligence platform.', adiStyle: true },
+        { name: 'Akhilesh N Naidu', role: 'COO & Co-founder', image: '/akhi.png',  desc: 'Operations strategist ensuring seamless deployment, partnerships, and scaling of Triye\'s security solutions.' },
     ];
 
     return (
-        <section id="founders" className="py-16 sm:py-32 bg-gray-950 relative overflow-hidden">
-            {/* Cyber Grid Background */}
-            <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-10 pointer-events-none"></div>
-
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
-                <div className="text-center mb-12 sm:mb-16">
-                    <motion.h2
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                        className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6"
-                    >
-                        Our Founders
+        <section id="founders" className="py-16 sm:py-28" style={{ background: '#0a0a0a' }}>
+            <div className="max-w-4xl mx-auto px-4 sm:px-8">
+                <div className="text-center mb-14">
+                    <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-amber-400 font-semibold text-sm uppercase tracking-widest mb-3">Team</motion.p>
+                    <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-3xl sm:text-4xl lg:text-5xl font-black text-white">
+                        Meet the <span className="gradient-text">Founders</span>
                     </motion.h2>
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                        className="text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto"
-                    >
-                        Meet the visionary team behind Triye's revolutionary AI security technology.
+                    <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-zinc-500 text-sm mt-3">
+                        The visionary team building India's most advanced AI security platform.
                     </motion.p>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12 max-w-5xl mx-auto">
-                    {founders.map((founder, index) => (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {founders.map((f, i) => (
                         <motion.div
-                            key={index}
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                            className="text-center group"
+                            key={i}
+                            initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.12 }}
+                            className="group flex flex-col items-center text-center p-8 transition-all duration-300"
                         >
-                            <div className="mb-6 relative inline-block">
-                                <div className={`absolute inset-0 bg-gradient-to-br ${founder.gradient} blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-300 rounded-full`}></div>
-                                <div
-                                    className="w-48 h-48 mx-auto rounded-full overflow-hidden bg-gray-900 shadow-xl border-2 border-white/10 group-hover:border-emerald-500/50 transition-colors duration-300 relative z-10"
-                                >
-                                    {founder.hasImage ? (
-                                        <img
-                                            src={founder.image}
-                                            alt={founder.name}
-                                            className={`w-full h-full object-cover transition-all duration-500 ${founder.image === '/adi.png' ? 'object-top scale-105' : ''}`}
-                                        />
-                                    ) : (
-                                        <div className="w-full h-full flex items-center justify-center bg-gray-800">
-                                            <User className="w-24 h-24 text-gray-600" />
-                                        </div>
-                                    )}
+                            {/* Circular photo */}
+                            <div className="relative mb-5">
+                                <div className="w-40 h-40 rounded-full overflow-hidden border-2 border-amber-400/25 group-hover:border-amber-400/50 transition-all duration-300">
+                                    <img
+                                        src={f.image}
+                                        alt={f.name}
+                                        className={`w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ${f.adiStyle ? 'object-top scale-105' : 'object-center'}`}
+                                    />
                                 </div>
+                                {/* Amber ring glow */}
+                                <div className="absolute inset-0 rounded-full bg-amber-400/5 group-hover:bg-amber-400/10 transition-all duration-300" />
                             </div>
 
-                            <div className="space-y-2">
-                                <h3 className="text-xl sm:text-2xl font-bold text-white group-hover:text-emerald-400 transition-colors">
-                                    {founder.name}
-                                </h3>
-                                <p className="text-base sm:text-lg font-medium text-emerald-500/80">
-                                    {founder.role}
-                                </p>
-                            </div>
-
-                            <div className="mt-4 w-12 h-1 bg-gray-800 mx-auto rounded-full group-hover:bg-emerald-500/50 transition-colors duration-300"></div>
+                            <h3 className="text-base font-bold text-white mb-1.5">{f.name}</h3>
+                            <span className="inline-block text-xs font-semibold text-amber-400 bg-amber-400/8 border border-amber-400/20 px-2.5 py-0.5 rounded-full mb-4">{f.role}</span>
+                            <p className="text-zinc-500 text-sm leading-relaxed">{f.desc}</p>
                         </motion.div>
                     ))}
                 </div>

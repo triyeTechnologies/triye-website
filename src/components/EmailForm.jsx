@@ -15,10 +15,7 @@ const EmailForm = ({ onClose }) => {
   const [error, setError] = useState(null);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
@@ -29,11 +26,7 @@ const EmailForm = ({ onClose }) => {
     try {
       await database.insertMessage(formData);
       setSubmitted(true);
-
-      // Close form after 2 seconds
-      setTimeout(() => {
-        onClose();
-      }, 2000);
+      setTimeout(() => { onClose(); }, 2000);
     } catch (err) {
       console.error('Error submitting message:', err);
       setError('Failed to send message. Please try again.');
@@ -41,160 +34,81 @@ const EmailForm = ({ onClose }) => {
     }
   };
 
+  const inputClass = "w-full px-3 py-2.5 rounded-lg border border-white/8 bg-white/4 focus:border-amber-400/40 focus:ring-1 focus:ring-amber-400/20 transition-all duration-200 text-white placeholder-zinc-600 text-sm outline-none";
+  const labelClass = "block text-sm font-medium text-zinc-400 mb-1.5 flex items-center gap-1.5";
+
   if (submitted) {
     return (
-      <div
-        className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4"
-        onClick={onClose}
-      >
-        <div
-          className="glass-cyber rounded-2xl p-8 max-w-md w-full text-center shadow-2xl border border-white/10"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-emerald-500/30 box-glow">
-            <Send className="w-8 h-8 text-emerald-400" />
+      <div className="fixed inset-0 bg-black/85 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={onClose}>
+        <div className="rounded-2xl p-8 max-w-md w-full text-center border border-white/8" style={{ background: '#1a1a1a' }} onClick={(e) => e.stopPropagation()}>
+          <div className="w-16 h-16 bg-amber-400/15 rounded-full flex items-center justify-center mx-auto mb-4 border border-amber-400/25">
+            <Send className="w-7 h-7 text-amber-400" />
           </div>
-          <h3 className="text-2xl font-bold text-white mb-2 text-glow">Message Sent!</h3>
-          <p className="text-gray-400">
-            Thank you for contacting us. We'll get back to you soon.
-          </p>
+          <h3 className="text-2xl font-bold text-white mb-2">Message Sent!</h3>
+          <p className="text-zinc-500">Thank you for contacting us. We'll get back to you soon.</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div
-      className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4"
-      onClick={onClose}
-    >
-      <div
-        className="glass-cyber rounded-2xl p-6 max-w-2xl w-full shadow-2xl border border-white/10"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="flex items-center justify-between mb-6 border-b border-white/5 pb-4">
-          <h2 className="text-2xl font-bold text-white text-glow">Contact Us</h2>
-          <button
-            onClick={onClose}
-            className="w-10 h-10 bg-white/5 hover:bg-white/10 rounded-full flex items-center justify-center transition-colors duration-200 border border-white/10"
-          >
-            <X className="w-5 h-5 text-gray-400" />
+    <div className="fixed inset-0 bg-black/85 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={onClose}>
+      <div className="rounded-2xl p-6 max-w-2xl w-full border border-white/8" style={{ background: '#1a1a1a' }} onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-center justify-between mb-6 border-b border-white/6 pb-4">
+          <h2 className="text-xl font-bold text-white">Contact Us</h2>
+          <button onClick={onClose} className="w-9 h-9 bg-white/5 hover:bg-white/10 rounded-lg flex items-center justify-center transition-colors border border-white/8">
+            <X className="w-4 h-4 text-zinc-400" />
           </button>
         </div>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-500/10 border border-red-500/30 text-red-400 rounded-lg">
-            {error}
-          </div>
+          <div className="mb-4 p-3 bg-red-500/10 border border-red-500/25 text-red-400 rounded-lg text-sm">{error}</div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">
-                <User className="w-4 h-4 inline mr-1 text-emerald-500" />
-                Name *
-              </label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 bg-gray-900/50 border border-white/10 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200 text-white placeholder-gray-500 text-sm"
-                placeholder="Your full name"
-              />
+              <label className={labelClass}><User className="w-3.5 h-3.5 text-amber-400" /> Name *</label>
+              <input type="text" name="name" value={formData.name} onChange={handleChange} required className={inputClass} placeholder="Your full name" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">
-                <Phone className="w-4 h-4 inline mr-1 text-emerald-500" />
-                Phone
-              </label>
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                className="w-full px-3 py-2 bg-gray-900/50 border border-white/10 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200 text-white placeholder-gray-500 text-sm"
-                placeholder="Your phone number"
-              />
+              <label className={labelClass}><Phone className="w-3.5 h-3.5 text-amber-400" /> Phone</label>
+              <input type="tel" name="phone" value={formData.phone} onChange={handleChange} className={inputClass} placeholder="Your phone number" />
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">
-                <Mail className="w-4 h-4 inline mr-1 text-emerald-500" />
-                Email *
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 bg-gray-900/50 border border-white/10 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200 text-white placeholder-gray-500 text-sm"
-                placeholder="your.email@example.com"
-              />
+              <label className={labelClass}><Mail className="w-3.5 h-3.5 text-amber-400" /> Email *</label>
+              <input type="email" name="email" value={formData.email} onChange={handleChange} required className={inputClass} placeholder="your.email@example.com" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">
-                <FileText className="w-4 h-4 inline mr-1 text-emerald-500" />
-                Subject *
-              </label>
-              <input
-                type="text"
-                name="subject"
-                value={formData.subject}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 bg-gray-900/50 border border-white/10 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200 text-white placeholder-gray-500 text-sm"
-                placeholder="What is this about?"
-              />
+              <label className={labelClass}><FileText className="w-3.5 h-3.5 text-amber-400" /> Subject *</label>
+              <input type="text" name="subject" value={formData.subject} onChange={handleChange} required className={inputClass} placeholder="What is this about?" />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1">
-              <MessageSquare className="w-4 h-4 inline mr-1 text-emerald-500" />
-              Message *
-            </label>
-            <textarea
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              required
-              rows={3}
-              className="w-full px-3 py-2 bg-gray-900/50 border border-white/10 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200 resize-none text-white placeholder-gray-500 text-sm"
-              placeholder="Tell us more about your inquiry..."
-            />
+            <label className={labelClass}><MessageSquare className="w-3.5 h-3.5 text-amber-400" /> Message *</label>
+            <textarea name="message" value={formData.message} onChange={handleChange} required rows={3} className={inputClass + " resize-none"} placeholder="Tell us more about your inquiry..." />
           </div>
 
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`w-full py-3 px-6 rounded-lg font-semibold text-white transition-all duration-200 flex items-center justify-center space-x-2 ${isSubmitting
-              ? 'bg-gray-800 cursor-not-allowed text-gray-400'
-              : 'btn-neon bg-emerald-600 hover:bg-emerald-500 transform hover:scale-105'
-              }`}
+            className={`w-full py-3 px-6 rounded-xl font-bold transition-all duration-200 flex items-center justify-center gap-2 ${
+              isSubmitting ? 'bg-zinc-800 cursor-not-allowed text-zinc-500' : 'bg-amber-400 hover:bg-amber-300 text-black'
+            }`}
           >
             {isSubmitting ? (
-              <>
-                <div className="w-5 h-5 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
-                <span>Sending...</span>
-              </>
+              <><div className="w-4 h-4 border-2 border-zinc-500 border-t-transparent rounded-full animate-spin" /><span>Sending...</span></>
             ) : (
-              <>
-                <Send className="w-5 h-5" />
-                <span>Send Message</span>
-              </>
+              <><Send className="w-4 h-4" /><span>Send Message</span></>
             )}
           </button>
         </form>
 
-        <p className="text-xs text-gray-500 text-center mt-4">
-          We respect your privacy and will only use your information to respond to your inquiry.
-        </p>
+        <p className="text-xs text-zinc-700 text-center mt-4">We respect your privacy and will only use your information to respond to your inquiry.</p>
       </div>
     </div>
   );

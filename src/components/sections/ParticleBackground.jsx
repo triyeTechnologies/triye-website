@@ -95,7 +95,7 @@ const ParticleBackground = () => {
             links.forEach(l => {
                 const a=nodes[l.a], b=nodes[l.b];
                 ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y);
-                ctx.strokeStyle = 'rgba(16,185,129,0.08)';
+                ctx.strokeStyle = 'rgba(245,158,11,0.1)';
                 ctx.lineWidth = 0.7; ctx.stroke();
             });
         }
@@ -104,7 +104,7 @@ const ParticleBackground = () => {
             nodes.forEach(n => {
                 if (n.ping > 0) {
                     ctx.beginPath(); ctx.arc(n.x, n.y, 6+(1-n.ping)*22, 0, Math.PI*2);
-                    ctx.strokeStyle = `rgba(16,185,129,${n.ping*0.45})`; ctx.lineWidth=1; ctx.stroke();
+                    ctx.strokeStyle = `rgba(245,158,11,${n.ping*0.45})`; ctx.lineWidth=1; ctx.stroke();
                 }
                 if (n.alert > 0) {
                     ctx.beginPath(); ctx.arc(n.x, n.y, 8+(1-n.alert)*20, 0, Math.PI*2);
@@ -114,10 +114,10 @@ const ParticleBackground = () => {
                 ctx.beginPath(); ctx.arc(n.x, n.y, 2.5, 0, Math.PI*2);
                 ctx.fillStyle = n.alert > 0.1
                     ? `rgba(239,68,68,${0.7 + n.alert*0.3})`
-                    : 'rgba(16,185,129,0.8)';
+                    : 'rgba(245,158,11,0.8)';
                 ctx.fill();
                 // camera tick marks
-                ctx.strokeStyle = n.alert > 0.1 ? 'rgba(239,68,68,0.5)' : 'rgba(16,185,129,0.35)';
+                ctx.strokeStyle = n.alert > 0.1 ? 'rgba(239,68,68,0.5)' : 'rgba(245,158,11,0.35)';
                 ctx.lineWidth = 0.8;
                 ctx.beginPath();
                 ctx.moveTo(n.x-5, n.y-5); ctx.lineTo(n.x-2, n.y-2);
@@ -181,7 +181,7 @@ const ParticleBackground = () => {
         }
 
         function drawHUD() {
-            ctx.font='8.5px monospace'; ctx.fillStyle='rgba(16,185,129,0.35)';
+            ctx.font='8.5px monospace'; ctx.fillStyle='rgba(245,158,11,0.35)';
             ctx.textAlign='left';
             ctx.fillText('● SYSTEM ACTIVE', 14, 22);
             ctx.fillText(`CAMS: ${nodes.length}   LINKS: ${links.length}`, 14, 35);

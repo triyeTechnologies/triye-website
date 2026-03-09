@@ -47,7 +47,7 @@ const TriyeWebsite = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-gray-950 overflow-x-hidden">
+    <div className="relative min-h-screen overflow-x-hidden" style={{ background: '#0a0a0a' }}>
       <Header activeSection={activeSection} />
       <HeroSection isLoaded={isLoaded} />
       <VisionSection />

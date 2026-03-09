@@ -1,246 +1,81 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Brain, Network, Zap, Target, BarChart3, Lock, X } from 'lucide-react';
+import { Brain, Network, Zap, Target, BarChart3, Lock, X, CheckCircle } from 'lucide-react';
 
 const ConceptSection = () => {
-    const [selectedTechCard, setSelectedTechCard] = useState(null);
+    const [selected, setSelected] = useState(null);
 
     const concepts = [
-        {
-            icon: Brain,
-            title: 'AI-Powered Detection',
-            desc: 'Advanced machine learning algorithms analyze video feeds from traffic cameras in real-time to identify criminal activities with high precision and minimal false positives.',
-            color: 'from-emerald-500 to-teal-500',
-            detailContent: {
-                title: 'AI-Powered Detection System',
-                description: 'Our advanced artificial intelligence system continuously monitors traffic CCTV cameras across urban areas, using cutting-edge machine learning algorithms to detect criminal activities in real-time.',
-                features: [
-                    'Real-time analysis of traffic camera feeds throughout the urban network',
-                    'Advanced pattern recognition to identify suspicious behaviors and criminal activities',
-                    'Machine learning models trained specifically for urban security scenarios',
-                    'Edge computing technology for instant processing and response',
-                    'High accuracy detection with minimal false positive alerts',
-                    'Continuous learning and improvement from new data patterns'
-                ],
-                technology: 'Built using state-of-the-art deep learning frameworks and edge computing infrastructure, our AI system processes thousands of camera feeds simultaneously while maintaining real-time response capabilities.'
-            }
-        },
-        {
-            icon: Network,
-            title: 'Network Intelligence',
-            desc: 'Interconnected camera systems throughout the urban area share information instantly, creating comprehensive security coverage with zero blind spots for seamless tracking.',
-            color: 'from-blue-500 to-cyan-500',
-            detailContent: {
-                title: 'Intelligent Camera Network',
-                description: 'A sophisticated network of interconnected cameras that creates a comprehensive surveillance web across the entire urban area, ensuring zero blind spots and seamless tracking capabilities.',
-                features: [
-                    'Citywide camera network with complete urban coverage',
-                    'Zero blind spots through strategic camera positioning and coordination',
-                    'Instant information sharing between connected camera nodes',
-                    'Automatic handoff of suspect tracking between camera zones',
-                    'Real-time coordination between traffic and security cameras',
-                    'Network redundancy ensures continuous operation even if individual cameras fail'
-                ],
-                technology: 'Our network utilizes advanced edge computing and 5G connectivity to ensure instant communication between cameras, creating a unified surveillance ecosystem that responds as a single intelligent entity.'
-            }
-        },
-        {
-            icon: Zap,
-            title: 'Instant Response',
-            desc: 'Automated alert systems notify law enforcement within seconds through mobile applications, providing real-time tracking and location data for immediate action coordination.',
-            color: 'from-yellow-500 to-orange-500',
-            detailContent: {
-                title: 'Real-Time Alert & Response System',
-                description: 'Lightning-fast notification system that instantly alerts law enforcement the moment criminal activity is detected, providing all necessary information for immediate response and coordination.',
-                features: [
-                    'Instant alerts sent to police mobile app within seconds of detection',
-                    'Real-time suspect location tracking and movement patterns',
-                    'Live map updates showing suspect\'s route and predicted path',
-                    'Detailed suspect information including appearance and vehicle details',
-                    'Automated coordination with nearest available police units',
-                    'Two-way communication between system and responding officers'
-                ],
-                technology: 'Built on high-speed communication networks with redundant alert pathways, ensuring that critical information reaches law enforcement instantly, even in high-traffic network conditions.'
-            }
-        },
-        {
-            icon: Target,
-            title: 'Suspect Tagging & Tracking',
-            desc: 'When suspects attempt to escape, our system creates detailed identification tags and tracks them seamlessly across the entire urban camera network.',
-            color: 'from-red-500 to-pink-500',
-            detailContent: {
-                title: 'Advanced Suspect Tagging System',
-                description: 'When criminal activity is detected and a suspect attempts to escape, our system immediately creates comprehensive identification tags and initiates citywide tracking protocols.',
-                features: [
-                    'Instant capture of suspect physical characteristics and clothing details',
-                    'Vehicle identification including make, model, color, and license plate',
-                    'Facial recognition tagging when faces are clearly visible',
-                    'Automatic creation of searchable suspect profiles',
-                    'Real-time tracking as suspects move through different camera zones',
-                    'Persistent tracking even when suspects change appearance or vehicles'
-                ],
-                technology: 'Uses advanced computer vision and biometric analysis to create unique suspect signatures that can be tracked across multiple camera systems while maintaining accuracy even in challenging conditions.'
-            }
-        },
-        {
-            icon: BarChart3,
-            title: 'Smart Analytics',
-            desc: 'Comprehensive data analysis providing insights into crime patterns, hotspot identification, and trend analysis for optimized security resource allocation.',
-            color: 'from-purple-500 to-indigo-500',
-            detailContent: {
-                title: 'Intelligent Crime Analytics',
-                description: 'Advanced analytics engine that processes all security data to identify patterns, predict trends, and provide actionable insights for law enforcement strategy and resource allocation.',
-                features: [
-                    'Crime pattern analysis across different urban areas and time periods',
-                    'Hotspot identification for proactive police deployment',
-                    'Trend analysis to predict potential security risks',
-                    'Resource allocation recommendations based on data insights',
-                    'Performance metrics for response times and success rates',
-                    'Predictive modeling for crime prevention strategies'
-                ],
-                technology: 'Leverages big data processing and machine learning algorithms to analyze vast amounts of security data, providing law enforcement with strategic insights for more effective crime prevention and response.'
-            }
-        },
-        {
-            icon: Lock,
-            title: 'Privacy-First Design',
-            desc: 'Built with privacy protection and data security at its core, ensuring compliance with surveillance ethics and maintaining public trust.',
-            color: 'from-green-500 to-emerald-500',
-            detailContent: {
-                title: 'Privacy & Security Framework',
-                description: 'Our system is designed with privacy protection as a fundamental principle, ensuring that all surveillance activities comply with ethical standards and legal requirements while maintaining effectiveness.',
-                features: [
-                    'Data encryption for all communications and stored information',
-                    'Privacy-compliant facial recognition with automatic data purging',
-                    'Role-based access control for law enforcement personnel',
-                    'Audit trails for all system activities and data access',
-                    'Compliance with national and international privacy regulations',
-                    'Transparent reporting on system usage and privacy protections'
-                ],
-                technology: 'Implements advanced encryption, secure data handling protocols, and privacy-preserving AI techniques to ensure that public safety enhancement never comes at the cost of individual privacy rights.'
-            }
-        }
+        { icon: Brain,    title: 'AI-Powered Detection',        desc: 'ML algorithms analyze camera feeds in real-time, identifying criminal activities with high precision and minimal false positives.',   color: 'bg-amber-500',  span: 'lg:col-span-2', detailContent: { title: 'AI-Powered Detection System', description: 'Our AI system continuously monitors traffic CCTV cameras using cutting-edge ML to detect criminal activities in real-time.', features: ['Real-time analysis of traffic camera feeds', 'Pattern recognition for suspicious behaviors', 'ML models trained for urban security', 'Edge computing for instant processing', 'High accuracy with minimal false positives', 'Continuous learning from new data'] } },
+        { icon: Network,  title: 'Network Intelligence',         desc: 'Interconnected camera systems share data instantly — complete coverage with zero blind spots.',                                      color: 'bg-orange-500', span: '',               detailContent: { title: 'Intelligent Camera Network', description: 'A sophisticated network creating a comprehensive surveillance web with zero blind spots and seamless tracking.', features: ['Citywide camera network', 'Zero blind spots', 'Instant information sharing', 'Automatic suspect handoff', 'Real-time camera coordination', 'Network redundancy'] } },
+        { icon: Zap,      title: 'Instant Response',             desc: 'Automated alerts reach law enforcement within seconds with real-time tracking data.',                                               color: 'bg-yellow-500', span: '',               detailContent: { title: 'Real-Time Alert & Response', description: 'Lightning-fast notifications instantly alert law enforcement the moment criminal activity is detected.', features: ['Alerts to police app within seconds', 'Real-time suspect tracking', 'Live map with suspect route', 'Detailed appearance info', 'Automated unit coordination', 'Two-way officer communication'] } },
+        { icon: Target,   title: 'Suspect Tagging',              desc: 'Captures full suspect profiles — appearance, vehicle, license plate — and tracks them across the city.',                           color: 'bg-red-500',    span: '',               detailContent: { title: 'Advanced Suspect Tagging', description: 'Immediately creates comprehensive identification tags and initiates citywide tracking when criminal activity is detected.', features: ['Physical characteristic capture', 'Vehicle + plate identification', 'Facial recognition tagging', 'Searchable suspect profiles', 'Cross-zone tracking', 'Persistent tracking'] } },
+        { icon: BarChart3, title: 'Smart Analytics',             desc: 'Crime pattern analysis, hotspot identification and trend prediction for strategic law enforcement.',                               color: 'bg-purple-500', span: '',               detailContent: { title: 'Intelligent Crime Analytics', description: 'Processes all security data to identify patterns, predict trends, and provide actionable insights for law enforcement.', features: ['Pattern analysis', 'Hotspot identification', 'Trend prediction', 'Resource allocation', 'Performance metrics', 'Predictive modeling'] } },
+        { icon: Lock,     title: 'Privacy-First Design',         desc: 'Data encryption, role-based access, and full compliance with privacy regulations — ethics built in.',                             color: 'bg-teal-500',   span: 'lg:col-span-2', detailContent: { title: 'Privacy & Security Framework', description: 'Privacy protection is a fundamental principle — all surveillance activities comply with ethical and legal standards.', features: ['End-to-end encryption', 'Privacy-compliant facial recognition', 'Role-based access control', 'Full audit trails', 'National privacy compliance', 'Transparent reporting'] } },
     ];
 
     return (
-        <section id="concept" className="py-12 sm:py-24 bg-gray-950 relative overflow-hidden">
-            {/* Cyber Grid Background */}
-            <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-10 pointer-events-none"></div>
-
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
-                <div className="text-center mb-10 sm:mb-16">
-                    <motion.h2
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                        className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4"
-                    >
-                        Core Technology Concepts
+        <section id="concept" className="py-16 sm:py-28" style={{ background: '#0a0a0a' }}>
+            <div className="max-w-7xl mx-auto px-4 sm:px-8">
+                <div className="text-center mb-12">
+                    <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-amber-400 font-semibold text-sm uppercase tracking-widest mb-3">Technology</motion.p>
+                    <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-4">
+                        Core Technology <span className="gradient-text">Concepts</span>
                     </motion.h2>
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                        className="text-base sm:text-lg text-gray-400 max-w-3xl mx-auto"
-                    >
-                        The foundation of our revolutionary security platform built on advanced AI and network intelligence.
+                    <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-zinc-500 max-w-xl mx-auto">
+                        The foundation of our security platform built on advanced AI and network intelligence.
                     </motion.p>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                    {concepts.map((concept, index) => (
+                {/* Bento grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-fr">
+                    {concepts.map((c, i) => (
                         <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                            whileHover={{ scale: 1.05, y: -5 }}
-                            onClick={() => setSelectedTechCard(concept)}
-                            className="glass-cyber rounded-3xl p-4 sm:p-6 shadow-lg border border-white/5 hover:border-emerald-500/30 cursor-pointer group transition-all duration-300 relative overflow-hidden"
+                            key={i}
+                            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }}
+                            whileHover={{ y: -3 }}
+                            onClick={() => setSelected(c)}
+                            className={`border border-white/6 hover:border-white/14 rounded-2xl p-6 cursor-pointer group transition-all duration-200 ${c.span} ${i === 0 ? 'sm:col-span-2 lg:col-span-2' : ''} ${i === 5 ? 'sm:col-span-2 lg:col-span-2' : ''}`}
+                            style={{ background: '#1a1a1a' }}
                         >
-                            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-                            <div className={`w-12 h-12 bg-gradient-to-r ${concept.color} rounded-2xl flex items-center justify-center mb-4 shadow-[0_0_15px_rgba(0,0,0,0.3)] relative z-10 group-hover:scale-110 transition-transform duration-300`}>
-                                <concept.icon className="w-6 h-6 text-white" />
+                            <div className={`w-11 h-11 ${c.color} rounded-xl flex items-center justify-center mb-4 shadow-sm group-hover:scale-110 transition-transform duration-200`}>
+                                <c.icon className="w-5 h-5 text-white" />
                             </div>
-
-                            <h3 className="text-base sm:text-lg font-bold text-white mb-3 relative z-10 group-hover:text-emerald-400 transition-colors">
-                                {concept.title}
-                            </h3>
-
-                            <p className="text-gray-400 leading-relaxed text-sm mb-3 relative z-10">
-                                {concept.desc}
-                            </p>
-
-                            <div className="text-emerald-400 font-medium text-xs flex items-center relative z-10">
-                                Click to learn more <span className="ml-1 group-hover:translate-x-1 transition-transform">→</span>
-                            </div>
+                            <h3 className="text-base font-bold text-white mb-2">{c.title}</h3>
+                            <p className="text-zinc-500 text-sm leading-relaxed mb-4">{c.desc}</p>
+                            <span className="text-xs font-semibold text-amber-400 flex items-center gap-1 group-hover:gap-2 transition-all">
+                                Learn more <span>→</span>
+                            </span>
                         </motion.div>
                     ))}
                 </div>
             </div>
 
-            {/* Technology Detail Modal */}
+            {/* Modal */}
             <AnimatePresence>
-                {selectedTechCard && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4"
-                        onClick={() => setSelectedTechCard(null)}
-                    >
-                        <motion.div
-                            initial={{ scale: 0.9, y: 20 }}
-                            animate={{ scale: 1, y: 0 }}
-                            exit={{ scale: 0.9, y: 20 }}
-                            transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                            className="glass-cyber rounded-2xl p-4 sm:p-6 max-w-3xl w-full max-h-[85vh] overflow-y-auto scrollbar-hide shadow-2xl border border-white/10"
-                            onClick={(e) => e.stopPropagation()}
-                        >
+                {selected && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={() => setSelected(null)}>
+                        <motion.div initial={{ scale: 0.93, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.93, y: 20 }} transition={{ type: 'spring', damping: 28, stiffness: 300 }}
+                            className="rounded-2xl p-7 max-w-2xl w-full max-h-[85vh] overflow-y-auto border border-white/10"
+                            style={{ background: '#1a1a1a' }}
+                            onClick={e => e.stopPropagation()}>
                             <div className="flex items-center justify-between mb-6">
-                                <div className="flex items-center space-x-4">
-                                    <div className={`w-12 h-12 bg-gradient-to-r ${selectedTechCard.color} rounded-xl flex items-center justify-center shadow-lg box-glow`}>
-                                        <selectedTechCard.icon className="w-6 h-6 text-white" />
-                                    </div>
-                                    <h2 className="text-xl sm:text-2xl font-bold text-white">{selectedTechCard.detailContent.title}</h2>
+                                <div className="flex items-center gap-3">
+                                    <div className={`w-10 h-10 ${selected.color} rounded-xl flex items-center justify-center`}><selected.icon className="w-5 h-5 text-white" /></div>
+                                    <h2 className="text-lg font-bold text-white">{selected.detailContent.title}</h2>
                                 </div>
-                                <button
-                                    onClick={() => setSelectedTechCard(null)}
-                                    className="w-10 h-10 bg-white/5 hover:bg-white/10 rounded-full flex items-center justify-center transition-colors duration-200 border border-white/5"
-                                >
-                                    <X className="w-5 h-5 text-gray-400 hover:text-white" />
-                                </button>
+                                <button onClick={() => setSelected(null)} className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors"><X className="w-4 h-4 text-zinc-400" /></button>
                             </div>
-
-                            <div className="space-y-6">
-                                <p className="text-base text-gray-300 leading-relaxed border-b border-white/5 pb-4">
-                                    {selectedTechCard.detailContent.description}
-                                </p>
-
-                                <div>
-                                    <h3 className="text-lg font-bold text-emerald-400 mb-3">Key Features</h3>
-                                    <ul className="space-y-3">
-                                        {selectedTechCard.detailContent.features.map((feature, idx) => (
-                                            <li key={idx} className="flex items-start space-x-3">
-                                                <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-2.5 flex-shrink-0 box-glow"></div>
-                                                <span className="text-sm text-gray-300 leading-relaxed">{feature}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-
-                                <div className="bg-white/5 rounded-xl p-4 border border-white/5">
-                                    <h3 className="text-lg font-bold text-white mb-2">Technology Implementation</h3>
-                                    <p className="text-sm text-gray-400 leading-relaxed">
-                                        {selectedTechCard.detailContent.technology}
-                                    </p>
-                                </div>
-                            </div>
+                            <p className="text-zinc-400 text-sm leading-relaxed pb-5 mb-5 border-b border-white/6">{selected.detailContent.description}</p>
+                            <p className="text-xs font-bold text-zinc-600 uppercase tracking-wider mb-3">Key Features</p>
+                            <ul className="space-y-2.5">
+                                {selected.detailContent.features.map((f, i) => (
+                                    <li key={i} className="flex items-start gap-3">
+                                        <CheckCircle className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" />
+                                        <span className="text-sm text-zinc-400">{f}</span>
+                                    </li>
+                                ))}
+                            </ul>
                         </motion.div>
                     </motion.div>
                 )}
