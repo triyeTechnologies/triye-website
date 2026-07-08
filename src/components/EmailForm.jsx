@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { X, Send, Phone, Mail, User, MessageSquare, FileText } from 'lucide-react';
 import { database } from '../lib/supabase';
+import useModalBehavior from '../hooks/useModalBehavior';
+
+// Bots that auto-fill every field or submit instantly get silently dropped
+const MIN_SUBMIT_MS = 2000;
 
 const EmailForm = ({ onClose }) => {
   const [formData, setFormData] = useState({
@@ -10,9 +14,17 @@ const EmailForm = ({ onClose }) => {
     subject: '',
     message: ''
   });
+  const [honeypot, setHoneypot] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(null);
+  const openedAt = useRef(Date.now());
+  const closeTimer = useRef(null);
+  const dialogRef = useModalBehavior(onClose);
+
+  useEffect(() => {
+    return () => clearTimeout(closeTimer.current);
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,10 +35,17 @@ const EmailForm = ({ onClose }) => {
     setIsSubmitting(true);
     setError(null);
 
+    // Spam checks: honeypot filled or submitted inhumanly fast → fake success
+    if (honeypot || Date.now() - openedAt.current < MIN_SUBMIT_MS) {
+      setSubmitted(true);
+      closeTimer.current = setTimeout(() => { onClose(); }, 2000);
+      return;
+    }
+
     try {
       await database.insertMessage(formData);
       setSubmitted(true);
-      setTimeout(() => { onClose(); }, 2000);
+      closeTimer.current = setTimeout(() => { onClose(); }, 2000);
     } catch (err) {
       console.error('Error submitting message:', err);
       setError('Failed to send message. Please try again.');
@@ -34,13 +53,13 @@ const EmailForm = ({ onClose }) => {
     }
   };
 
-  const inputClass = "w-full px-3 py-2.5 rounded-lg border border-white/8 bg-white/4 focus:border-amber-400/40 focus:ring-1 focus:ring-amber-400/20 transition-all duration-200 text-white placeholder-zinc-600 text-sm outline-none";
+  const inputClass = "w-full px-3 py-2.5 rounded-lg border border-white/[0.08] bg-white/[0.04] focus:border-amber-400/40 focus:ring-1 focus:ring-amber-400/20 transition-all duration-200 text-white placeholder-zinc-600 text-sm outline-none";
   const labelClass = "block text-sm font-medium text-zinc-400 mb-1.5 flex items-center gap-1.5";
 
   if (submitted) {
     return (
       <div className="fixed inset-0 bg-black/85 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={onClose}>
-        <div className="rounded-2xl p-8 max-w-md w-full text-center border border-white/8" style={{ background: '#1a1a1a' }} onClick={(e) => e.stopPropagation()}>
+        <div className="rounded-2xl p-8 max-w-md w-full text-center border border-white/[0.08]" style={{ background: '#1a1a1a' }} onClick={(e) => e.stopPropagation()}>
           <div className="w-16 h-16 bg-amber-400/15 rounded-full flex items-center justify-center mx-auto mb-4 border border-amber-400/25">
             <Send className="w-7 h-7 text-amber-400" />
           </div>
@@ -53,10 +72,10 @@ const EmailForm = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black/85 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={onClose}>
-      <div className="rounded-2xl p-6 max-w-2xl w-full border border-white/8" style={{ background: '#1a1a1a' }} onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-center justify-between mb-6 border-b border-white/6 pb-4">
+      <div ref={dialogRef} tabIndex={-1} role="dialog" aria-modal="true" aria-label="Contact us" className="rounded-2xl p-6 max-w-2xl w-full border border-white/[0.08] outline-none" style={{ background: '#1a1a1a' }} onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-center justify-between mb-6 border-b border-white/[0.06] pb-4">
           <h2 className="text-xl font-bold text-white">Contact Us</h2>
-          <button onClick={onClose} className="w-9 h-9 bg-white/5 hover:bg-white/10 rounded-lg flex items-center justify-center transition-colors border border-white/8">
+          <button onClick={onClose} aria-label="Close contact form" className="w-9 h-9 bg-white/5 hover:bg-white/10 rounded-lg flex items-center justify-center transition-colors border border-white/[0.08]">
             <X className="w-4 h-4 text-zinc-400" />
           </button>
         </div>
@@ -66,6 +85,17 @@ const EmailForm = ({ onClose }) => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Honeypot — invisible to humans, bots fill it and get dropped */}
+          <input
+            type="text"
+            name="website"
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            className="absolute -left-[9999px] top-auto w-px h-px overflow-hidden"
+          />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className={labelClass}><User className="w-3.5 h-3.5 text-amber-400" /> Name *</label>

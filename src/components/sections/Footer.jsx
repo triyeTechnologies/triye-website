@@ -363,7 +363,7 @@ const Footer = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-8">
 
                 {/* Top section — 4 columns */}
-                <div className="py-14 grid grid-cols-1 md:grid-cols-[220px_auto_auto_1fr] gap-8 lg:gap-12 border-b border-white/4">
+                <div className="py-14 grid grid-cols-1 md:grid-cols-[220px_auto_auto_1fr] gap-8 lg:gap-12 border-b border-white/[0.04]">
 
                     {/* Brand */}
                     <div>
@@ -379,7 +379,7 @@ const Footer = () => {
                         <div className="flex items-center gap-2.5">
                             {socials.map(({ icon: Icon, href, label }) => (
                                 <a key={label} href={href} target="_blank" rel="noopener noreferrer"
-                                    className="w-8 h-8 rounded-lg bg-white/4 hover:bg-white/8 flex items-center justify-center transition-colors border border-white/6">
+                                    className="w-8 h-8 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] flex items-center justify-center transition-colors border border-white/[0.06]">
                                     <Icon className="w-3.5 h-3.5 text-zinc-500 hover:text-white transition-colors" />
                                 </a>
                             ))}
@@ -420,7 +420,7 @@ const Footer = () => {
 
                 {/* Bottom bar */}
                 <div className="py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-zinc-700">
-                    <span>© 2025 Triye Technologies Pvt. Ltd. All rights reserved.</span>
+                    <span>© {new Date().getFullYear()} Triye Technologies Pvt. Ltd. All rights reserved.</span>
                     <span className="text-zinc-800">Traced · AI Surveillance Platform</span>
                 </div>
             </div>

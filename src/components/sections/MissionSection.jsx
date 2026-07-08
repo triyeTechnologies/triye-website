@@ -26,7 +26,7 @@ const MissionSection = () => {
                             Through innovative surveillance solutions, we're building the foundation for smarter, more secure urban areas across India — with privacy and ethics at the core.
                         </motion.p>
 
-                        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="mt-10 pt-8 border-t border-white/6 flex items-center gap-4">
+                        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="mt-10 pt-8 border-t border-white/[0.06] flex items-center gap-4">
                             <img src="/logo.png" alt="Triye" className="w-10 h-10 opacity-60" />
                             <div>
                                 <p className="text-sm font-semibold text-white">Triye Technologies</p>
@@ -44,7 +44,7 @@ const MissionSection = () => {
                                 className={`rounded-2xl p-7 flex flex-col justify-between min-h-[160px] ${
                                     i === 0 ? 'border border-amber-400/25' :
                                     i === 1 ? 'border border-white/10' :
-                                    'border border-white/6'
+                                    'border border-white/[0.06]'
                                 }`}
                                 style={{ background: i === 0 ? 'rgba(245,158,11,0.08)' : i === 1 ? '#222222' : '#1a1a1a' }}
                             >

@@ -20,7 +20,7 @@ const HeroSection = ({ isLoaded }) => {
             <motion.div
                 initial={{ scale: 1.08, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 1.8 }}
                 className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: `url('/hero section.png')` }}
+                style={{ backgroundImage: `url('/hero-section.webp')` }}
             >
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(5,5,5,0.95) 0%, rgba(5,5,5,0.75) 60%, rgba(5,5,5,0.92) 100%)' }} />
             </motion.div>
@@ -62,7 +62,7 @@ const HeroSection = ({ isLoaded }) => {
                         <motion.button
                             whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
                             onClick={() => document.getElementById('video').scrollIntoView({ behavior: 'smooth', block: 'start' })}
-                            className="flex items-center gap-2 bg-white/6 hover:bg-white/10 border border-white/10 text-white px-7 py-3.5 rounded-xl font-semibold text-sm transition-all"
+                            className="flex items-center gap-2 bg-white/[0.06] hover:bg-white/10 border border-white/10 text-white px-7 py-3.5 rounded-xl font-semibold text-sm transition-all"
                         >
                             Watch Demo
                         </motion.button>
@@ -76,7 +76,7 @@ const HeroSection = ({ isLoaded }) => {
                     className="mt-auto pt-16 grid grid-cols-3 gap-4 max-w-lg"
                 >
                     {stats.map(({ icon: Icon, value, label }, i) => (
-                        <div key={i} className="flex items-center gap-3 border-l border-white/8 pl-4 first:border-0 first:pl-0">
+                        <div key={i} className="flex items-center gap-3 border-l border-white/[0.08] pl-4 first:border-0 first:pl-0">
                             <Icon className="w-4 h-4 text-amber-400 flex-shrink-0" />
                             <div>
                                 <p className="text-white font-bold text-sm">{value}</p>

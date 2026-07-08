@@ -52,16 +52,15 @@ const TracedFeaturesSection = () => {
         }
     ];
 
-    const accentMap = {
-        amber:   { tab: 'border-amber-400/35 text-amber-400 bg-amber-400/10', card: 'bg-white/8 border border-white/12', dot: 'bg-amber-400', active: 'text-amber-400' },
-        red:     { tab: 'border-amber-400/35 text-amber-400 bg-amber-400/10', card: 'bg-white/8 border border-white/12', dot: 'bg-amber-400', active: 'text-amber-400' },
-        emerald: { tab: 'border-amber-400/35 text-amber-400 bg-amber-400/10', card: 'bg-white/8 border border-white/12', dot: 'bg-amber-400', active: 'text-amber-400' },
-        orange:  { tab: 'border-amber-400/35 text-amber-400 bg-amber-400/10', card: 'bg-white/8 border border-white/12', dot: 'bg-amber-400', active: 'text-amber-400' },
-        purple:  { tab: 'border-amber-400/35 text-amber-400 bg-amber-400/10', card: 'bg-white/8 border border-white/12', dot: 'bg-amber-400', active: 'text-amber-400' },
+    // Single amber accent used across all categories
+    const accent = {
+        tab: 'border-amber-400/35 text-amber-400 bg-amber-400/10',
+        card: 'bg-white/[0.08] border border-white/[0.12]',
+        dot: 'bg-amber-400',
     };
 
     const active = featureCategories.find(c => c.id === activeCategory);
-    const colors = accentMap[active.accent];
+    const colors = accent;
 
     return (
         <section id="features" className="py-16 sm:py-28" style={{ background: '#0a0a0a' }}>
@@ -82,14 +81,13 @@ const TracedFeaturesSection = () => {
                     {featureCategories.map((cat) => {
                         const Icon = cat.icon;
                         const isActive = activeCategory === cat.id;
-                        const c = accentMap[cat.accent];
                         return (
                             <motion.button
                                 key={cat.id}
                                 whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
                                 onClick={() => setActiveCategory(cat.id)}
                                 className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border font-semibold text-sm whitespace-nowrap transition-all duration-200 ${
-                                    isActive ? c.tab : 'bg-transparent border-white/8 text-zinc-500 hover:bg-amber-400/6 hover:border-amber-400/25 hover:text-amber-300'
+                                    isActive ? accent.tab : 'bg-transparent border-white/[0.08] text-zinc-500 hover:bg-amber-400/[0.06] hover:border-amber-400/25 hover:text-amber-300'
                                 }`}
                             >
                                 <Icon className="w-4 h-4 flex-shrink-0" />
@@ -115,7 +113,7 @@ const TracedFeaturesSection = () => {
                                         key={i}
                                         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: i * 0.08 }}
-                                        className="rounded-2xl p-6 border border-white/6 hover:border-white/12 transition-all duration-200 group"
+                                        className="rounded-2xl p-6 border border-white/[0.06] hover:border-white/[0.12] transition-all duration-200 group"
                                         style={{ background: '#1a1a1a' }}
                                     >
                                         <div className="flex items-start gap-4 mb-4">

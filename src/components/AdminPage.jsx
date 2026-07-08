@@ -30,6 +30,20 @@ const AdminPage = () => {
   const [deleteConfirmation, setDeleteConfirmation] = useState(null);
 
   useEffect(() => {
+    const checkAuthStatus = async () => {
+      try {
+        const session = await auth.getSession();
+        setIsAuthenticated(!!session);
+        if (session) {
+          await loadMessages();
+        }
+      } catch (error) {
+        console.error('Auth check error:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     checkAuthStatus();
 
     // Listen for auth state changes
@@ -47,19 +61,18 @@ const AdminPage = () => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const checkAuthStatus = async () => {
-    try {
-      const session = await auth.getSession();
-      setIsAuthenticated(!!session);
-      if (session) {
-        await loadMessages();
-      }
-    } catch (error) {
-      console.error('Auth check error:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Delete-confirmation modal: Escape closes, body scroll locked while open
+  useEffect(() => {
+    if (!deleteConfirmation) return;
+    const onKey = (e) => { if (e.key === 'Escape') setDeleteConfirmation(null); };
+    document.addEventListener('keydown', onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [deleteConfirmation]);
 
   const loadMessages = async () => {
     try {
@@ -138,15 +151,13 @@ const AdminPage = () => {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-gray-950 flex items-center justify-center p-4 relative overflow-hidden">
-        {/* Cyber Grid Background */}
-        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-10 pointer-events-none"></div>
 
         <div className="glass-cyber rounded-2xl shadow-2xl p-8 w-full max-w-md relative z-10 border border-white/5">
           <div className="text-center mb-8">
-            <div className="w-20 h-20 bg-gradient-to-r from-emerald-500/20 to-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-emerald-500/30 box-glow">
+            <div className="w-20 h-20 bg-gradient-to-r from-emerald-500/20 to-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-emerald-500/30">
               <Shield className="w-10 h-10 text-emerald-400" />
             </div>
-            <h2 className="text-3xl font-bold text-white mb-2 text-glow">Admin Access</h2>
+            <h2 className="text-3xl font-bold text-white mb-2">Admin Access</h2>
             <p className="text-gray-400">Sign in to view messages</p>
           </div>
 
@@ -181,6 +192,7 @@ const AdminPage = () => {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
@@ -215,8 +227,6 @@ const AdminPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-950 relative overflow-hidden">
-      {/* Cyber Grid Background */}
-      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-10 pointer-events-none"></div>
 
       <header className="glass-cyber border-b border-white/5 sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
@@ -226,7 +236,7 @@ const AdminPage = () => {
                 <Shield className="w-6 h-6 text-emerald-400" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-white text-glow">Triye Admin</h1>
+                <h1 className="text-2xl font-bold text-white">Triye Admin</h1>
                 <p className="text-sm text-gray-400">Message Management Dashboard</p>
               </div>
             </div>
@@ -258,7 +268,7 @@ const AdminPage = () => {
                   Contact Messages ({messages.length})
                 </h2>
               </div>
-              <div className="max-h-[600px] overflow-y-auto customize-scrollbar">
+              <div className="max-h-[600px] overflow-y-auto">
                 {messages.length === 0 ? (
                   <div className="p-6 text-center text-gray-500">
                     <Mail className="w-12 h-12 mx-auto mb-4 text-gray-700" />
@@ -374,10 +384,11 @@ const AdminPage = () => {
           onClick={() => setDeleteConfirmation(null)}
         >
           <div
+            role="dialog" aria-modal="true" aria-label="Delete message confirmation"
             className="glass-cyber rounded-2xl p-6 max-w-sm w-full border border-white/10 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-500/20 mx-auto mb-4 border border-red-500/30 box-glow">
+            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-500/20 mx-auto mb-4 border border-red-500/30">
               <AlertTriangle className="w-6 h-6 text-red-500" />
             </div>
 

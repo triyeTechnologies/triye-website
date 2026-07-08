@@ -30,7 +30,7 @@ const ContactSection = ({ setShowEmailForm }) => {
                                 const props = s.link ? { href: s.link, target: '_blank', rel: 'noopener noreferrer' } : { onClick: s.action };
                                 return (
                                     <Wrapper key={i} {...props} className={`group flex items-center gap-4 p-4 rounded-xl transition-all duration-200 ${s.hoverBorder} text-left w-full`} style={{ background: '#1a1a1a' }}>
-                                        <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/8 flex items-center justify-center flex-shrink-0">
+                                        <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/[0.08] flex items-center justify-center flex-shrink-0">
                                             <s.icon className={`w-5 h-5 text-zinc-500 transition-colors duration-200 ${s.hoverText}`} />
                                         </div>
                                         <div className="flex-1">

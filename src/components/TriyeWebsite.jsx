@@ -23,8 +23,11 @@ const TriyeWebsite = () => {
   useEffect(() => {
     setIsLoaded(true);
 
-    const handleScroll = () => {
-      const sections = ['home', 'vision', 'features', 'video', 'concept', 'roadmap', 'future', 'mission', 'founders', 'contact'];
+    const sections = ['home', 'vision', 'features', 'video', 'concept', 'roadmap', 'future', 'mission', 'founders', 'contact'];
+    let ticking = false;
+
+    const updateActiveSection = () => {
+      ticking = false;
       const scrollPosition = window.scrollY + 100;
 
       for (const section of sections) {
@@ -39,7 +42,15 @@ const TriyeWebsite = () => {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    // Throttle scroll-spy to one update per animation frame
+    const handleScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updateActiveSection);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -67,47 +78,6 @@ const TriyeWebsite = () => {
           onClose={() => setShowEmailForm(false)}
         />
       )}
-
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { 
-            transform: translateY(0px) rotate(0deg) scale(1); 
-          }
-          50% { 
-            transform: translateY(-20px) rotate(10deg) scale(1.05); 
-          }
-        }
-        
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-        
-        html {
-          scroll-behavior: smooth;
-        }
-        
-        /* Hide scrollbars */
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        
-        @media (prefers-reduced-motion: reduce) {
-          .animate-float,
-          .animate-pulse,
-          .animate-bounce {
-            animation: none;
-          }
-          
-          * {
-            transition-duration: 0.01ms !important;
-          }
-        }
-      `}</style>
     </div>
   );
 };

@@ -1,9 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Building2, Car, Shield, GraduationCap, ShoppingBag, Package, X, CheckCircle } from 'lucide-react';
 
 const FutureProductsSection = () => {
     const [selected, setSelected] = useState(null);
+
+    // Modal accessibility: Escape closes, body scroll locked while open
+    useEffect(() => {
+        if (!selected) return;
+        const onKey = (e) => { if (e.key === 'Escape') setSelected(null); };
+        document.addEventListener('keydown', onKey);
+        const prevOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.removeEventListener('keydown', onKey);
+            document.body.style.overflow = prevOverflow;
+        };
+    }, [selected]);
 
     const products = [
         {
@@ -66,16 +79,16 @@ const FutureProductsSection = () => {
                             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }}
                             whileHover={{ y: -3 }}
                             onClick={() => setSelected(p)}
-                            className="group relative border border-white/6 hover:border-amber-400/25 rounded-2xl overflow-hidden cursor-pointer transition-all duration-200"
+                            className="group relative border border-white/[0.06] hover:border-amber-400/25 rounded-2xl overflow-hidden cursor-pointer transition-all duration-200"
                             style={{ background: '#1a1a1a' }}
                         >
                             <div className="h-0.5 w-full bg-amber-400/20 group-hover:bg-amber-400/50 transition-colors" />
                             <div className="p-6">
                                 <div className="flex items-start justify-between mb-4">
-                                    <div className="w-11 h-11 bg-white/6 border border-white/10 rounded-xl flex items-center justify-center shadow-sm group-hover:bg-amber-400/10 group-hover:border-amber-400/20 transition-all duration-200">
+                                    <div className="w-11 h-11 bg-white/[0.06] border border-white/10 rounded-xl flex items-center justify-center shadow-sm group-hover:bg-amber-400/10 group-hover:border-amber-400/20 transition-all duration-200">
                                         <p.icon className="w-5 h-5 text-zinc-400 group-hover:text-amber-400 transition-colors" />
                                     </div>
-                                    <span className="text-xs font-semibold text-amber-400/70 bg-amber-400/6 border border-amber-400/15 px-2.5 py-1 rounded-full">Coming Soon</span>
+                                    <span className="text-xs font-semibold text-amber-400/70 bg-amber-400/[0.06] border border-amber-400/15 px-2.5 py-1 rounded-full">Coming Soon</span>
                                 </div>
                                 <h3 className="text-base font-bold text-white mb-2 group-hover:text-amber-400 transition-colors">{p.title}</h3>
                                 <p className="text-zinc-500 text-sm leading-relaxed mb-4">{p.desc}</p>
@@ -96,6 +109,7 @@ const FutureProductsSection = () => {
                         onClick={() => setSelected(null)}>
                         <motion.div initial={{ scale: 0.93, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.93, y: 20 }}
                             transition={{ type: 'spring', damping: 28, stiffness: 300 }}
+                            role="dialog" aria-modal="true" aria-label={selected.title}
                             className="rounded-2xl p-7 max-w-lg w-full border border-white/10 max-h-[85vh] overflow-y-auto"
                             style={{ background: '#1a1a1a' }}
                             onClick={e => e.stopPropagation()}>
@@ -109,11 +123,11 @@ const FutureProductsSection = () => {
                                         <span className="text-xs text-amber-400 font-semibold">Coming Soon</span>
                                     </div>
                                 </div>
-                                <button onClick={() => setSelected(null)} className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors">
+                                <button onClick={() => setSelected(null)} aria-label="Close dialog" className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors">
                                     <X className="w-4 h-4 text-zinc-400" />
                                 </button>
                             </div>
-                            <p className="text-zinc-400 text-sm leading-relaxed pb-5 mb-5 border-b border-white/6">{selected.detail}</p>
+                            <p className="text-zinc-400 text-sm leading-relaxed pb-5 mb-5 border-b border-white/[0.06]">{selected.detail}</p>
                             <p className="text-xs font-bold text-zinc-600 uppercase tracking-wider mb-3">Key Features</p>
                             <ul className="space-y-2.5">
                                 {selected.features.map((f, i) => (

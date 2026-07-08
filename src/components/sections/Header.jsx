@@ -32,7 +32,7 @@ const Header = ({ activeSection }) => {
                                 href={`#${item.id}`}
                                 className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
                                     activeSection === item.id
-                                        ? 'text-amber-400 bg-amber-400/8'
+                                        ? 'text-amber-400 bg-amber-400/[0.08]'
                                         : 'text-zinc-400 hover:text-white hover:bg-white/5'
                                 }`}
                             >
@@ -51,6 +51,8 @@ const Header = ({ activeSection }) => {
                     <button
                         className="lg:hidden p-2 rounded-lg text-zinc-400 hover:bg-white/5 hover:text-white transition-colors"
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                        aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+                        aria-expanded={mobileMenuOpen}
                     >
                         {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                     </button>
@@ -66,7 +68,7 @@ const Header = ({ activeSection }) => {
                                     href={`#${item.id}`}
                                     className={`px-4 py-2.5 text-sm font-medium rounded-lg transition-colors ${
                                         activeSection === item.id
-                                            ? 'text-amber-400 bg-amber-400/8'
+                                            ? 'text-amber-400 bg-amber-400/[0.08]'
                                             : 'text-zinc-400 hover:text-white hover:bg-white/5'
                                     }`}
                                     onClick={() => setMobileMenuOpen(false)}

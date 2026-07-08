@@ -236,11 +236,11 @@ const RoadmapSection = () => {
                                             filter={!fut ? 'url(#rm-glow)' : undefined}
                                         />
                                         {done && r > 5 && (
-                                            <path d={`M${m.cx - r*0.5},${m.cy + 0.5} L${m.cx - r*0.1},${m.cy + r*0.45} L${m.cx + r*0.55},${m.cy - r*0.45}`}
+                                            <path d={`M${m.cx - r*0.5},${m.y + 0.5} L${m.cx - r*0.1},${m.y + r*0.45} L${m.cx + r*0.55},${m.y - r*0.45}`}
                                                 stroke="#000" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
                                         )}
-                                        {curr && <circle cx={m.cx} cy={m.cy} r={r * 0.38} fill="#000" />}
-                                        {fut  && <circle cx={m.cx} cy={m.cy} r={r * 0.35} fill="rgba(100,100,100,0.4)" />}
+                                        {curr && <circle cx={m.cx} cy={m.y} r={r * 0.38} fill="#000" />}
+                                        {fut  && <circle cx={m.cx} cy={m.y} r={r * 0.35} fill="rgba(100,100,100,0.4)" />}
                                     </g>
                                 );
                             })}
@@ -264,7 +264,7 @@ const RoadmapSection = () => {
                                          s.status === 'current'   ? <Clock className="w-3 h-3 text-black" /> :
                                          <div className="w-2 h-2 rounded-full bg-white/20" />}
                                     </div>
-                                    {i < steps.length - 1 && <div className="w-0.5 flex-1 bg-white/8 my-1" />}
+                                    {i < steps.length - 1 && <div className="w-0.5 flex-1 bg-white/[0.08] my-1" />}
                                 </div>
                                 <div className="flex-1 pb-6">
                                     <div className="border rounded-xl p-4" style={{ background: '#1a1a1a', borderColor: s.status === 'current' ? 'rgba(251,146,60,0.3)' : 'rgba(255,255,255,0.06)' }}>

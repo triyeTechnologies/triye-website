@@ -4,10 +4,10 @@ import { Eye, Users, Network, Zap } from 'lucide-react';
 
 const VisionSection = () => {
     const features = [
-        { num: '01', icon: Eye,     title: 'Real-Time Detection',  color: 'bg-amber-500',   image: '/ai detection software.png',          desc: 'Our AI continuously monitors live camera feeds throughout urban areas, instantly identifying suspicious activity and criminal behavior through traffic CCTV networks using deep learning algorithms.' },
-        { num: '02', icon: Users,   title: 'Suspect ID',           color: 'bg-orange-500',  image: '/Criminal Identification Panel.png',   desc: 'When criminal activity is detected, the system captures comprehensive suspect profiles — facial features, clothing, physical characteristics, vehicle make, color and number plates — for precise identification.' },
-        { num: '03', icon: Network, title: 'Network Tracking',     color: 'bg-yellow-500',  image: '/City-Wide Tracking Map.png',          desc: 'Our interconnected camera network spans entire urban areas with zero blind spots. When a tagged suspect moves zones, surrounding cameras automatically begin tracking — seamless citywide coverage.' },
-        { num: '04', icon: Zap,     title: 'Live Response',        color: 'bg-red-500',     image: '/Police Mobile App Interface.png',     desc: 'The moment criminal activity is detected, law enforcement receives instant alerts through our mobile app with real-time suspect location, movement patterns, and map traces for interception.' },
+        { num: '01', icon: Eye,     title: 'Real-Time Detection',  color: 'bg-amber-500',   image: '/ai-detection-software.webp',          desc: 'Our AI continuously monitors live camera feeds throughout urban areas, instantly identifying suspicious activity and criminal behavior through traffic CCTV networks using deep learning algorithms.' },
+        { num: '02', icon: Users,   title: 'Suspect ID',           color: 'bg-orange-500',  image: '/criminal-identification-panel.webp',   desc: 'When criminal activity is detected, the system captures comprehensive suspect profiles — facial features, clothing, physical characteristics, vehicle make, color and number plates — for precise identification.' },
+        { num: '03', icon: Network, title: 'Network Tracking',     color: 'bg-yellow-500',  image: '/city-wide-tracking-map.webp',          desc: 'Our interconnected camera network spans entire urban areas with zero blind spots. When a tagged suspect moves zones, surrounding cameras automatically begin tracking — seamless citywide coverage.' },
+        { num: '04', icon: Zap,     title: 'Live Response',        color: 'bg-red-500',     image: '/police-mobile-app.webp',     desc: 'The moment criminal activity is detected, law enforcement receives instant alerts through our mobile app with real-time suspect location, movement patterns, and map traces for interception.' },
     ];
 
     return (
@@ -33,7 +33,7 @@ const VisionSection = () => {
                         <motion.div
                             key={i}
                             initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.6, delay: i * 0.05 }}
-                            className={`group grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-0 rounded-2xl overflow-hidden transition-all duration-300 ${i % 2 === 1 ? 'lg:grid-cols-[380px_1fr]' : ''}`}
+                            className={`group grid grid-cols-1 ${i % 2 === 1 ? 'lg:grid-cols-[380px_1fr]' : 'lg:grid-cols-[1fr_380px]'} gap-0 rounded-2xl overflow-hidden transition-all duration-300`}
                             style={{ background: '#1a1a1a' }}
                         >
                             {/* Text side */}
@@ -48,7 +48,7 @@ const VisionSection = () => {
                                 <p className="text-zinc-400 leading-relaxed text-sm">{f.desc}</p>
                                 <div className="flex flex-wrap gap-2 mt-5">
                                     {['AI-Powered', 'Real-Time', 'Urban-Wide'].map(tag => (
-                                        <span key={tag} className="px-3 py-1 bg-white/5 text-zinc-400 rounded-full text-xs font-medium border border-white/8">{tag}</span>
+                                        <span key={tag} className="px-3 py-1 bg-white/5 text-zinc-400 rounded-full text-xs font-medium border border-white/[0.08]">{tag}</span>
                                     ))}
                                 </div>
                             </div>

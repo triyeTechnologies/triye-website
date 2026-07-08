@@ -7,9 +7,20 @@ const ParticleBackground = () => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
         let animId;
+        let W, H; // logical (CSS pixel) dimensions
 
-        canvas.width  = window.innerWidth;
-        canvas.height = window.innerHeight;
+        // Scale for hi-DPI displays so the canvas isn't blurry
+        function sizeCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            W = window.innerWidth;
+            H = window.innerHeight;
+            canvas.width  = W * dpr;
+            canvas.height = H * dpr;
+            canvas.style.width  = `${W}px`;
+            canvas.style.height = `${H}px`;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        sizeCanvas();
 
         const NODE_COUNT = 90;
         const LINK_DIST  = 145;
@@ -22,8 +33,8 @@ const ParticleBackground = () => {
             // Grid-jitter — even spread across full hero
             const cols = 10;
             const rows = Math.ceil(NODE_COUNT / cols);
-            const cellW = canvas.width  / cols;
-            const cellH = canvas.height / rows;
+            const cellW = W / cols;
+            const cellH = H / rows;
             for (let i = 0; i < NODE_COUNT; i++) {
                 const col = i % cols;
                 const row = Math.floor(i / cols);
@@ -187,15 +198,15 @@ const ParticleBackground = () => {
             ctx.fillText(`CAMS: ${nodes.length}   LINKS: ${links.length}`, 14, 35);
             ctx.fillText('TRACED — INDIA SECURED', 14, 48);
             ctx.textAlign='right';
-            ctx.fillText(new Date().toLocaleTimeString('en-IN',{hour12:false}), canvas.width-14, 22);
-            ctx.fillText('LIVE SURVEILLANCE', canvas.width-14, 35);
+            ctx.fillText(new Date().toLocaleTimeString('en-IN',{hour12:false}), W-14, 22);
+            ctx.fillText('LIVE SURVEILLANCE', W-14, 35);
             ctx.textAlign='left';
         }
 
         // ── Main loop ─────────────────────────────────────────────
         let pulseTimer = 0;
         function animate() {
-            ctx.clearRect(0,0,canvas.width,canvas.height);
+            ctx.clearRect(0,0,W,H);
             drawLinks();
             drawPulses();
             drawSuspects();
@@ -230,11 +241,25 @@ const ParticleBackground = () => {
         }
 
         init();
-        animId = requestAnimationFrame(animate);
 
-        const onResize = () => { canvas.width=window.innerWidth; canvas.height=window.innerHeight; init(); };
+        // Only animate while the hero canvas is actually on screen
+        let visible = true;
+        const start = () => { cancelAnimationFrame(animId); animId = requestAnimationFrame(animate); };
+        const observer = new IntersectionObserver(([entry]) => {
+            visible = entry.isIntersecting;
+            if (visible) start();
+            else cancelAnimationFrame(animId);
+        });
+        observer.observe(canvas);
+        start();
+
+        const onResize = () => { sizeCanvas(); init(); };
         window.addEventListener('resize', onResize);
-        return () => { cancelAnimationFrame(animId); window.removeEventListener('resize', onResize); };
+        return () => {
+            cancelAnimationFrame(animId);
+            observer.disconnect();
+            window.removeEventListener('resize', onResize);
+        };
     }, []);
 
     return <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none" style={{zIndex:1}} />;

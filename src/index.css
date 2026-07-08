@@ -35,7 +35,9 @@
 ::-webkit-scrollbar-thumb { background: #333333; border-radius: 999px; }
 ::-webkit-scrollbar-thumb:hover { background: #444444; }
 
-*:focus { outline: none; box-shadow: 0 0 0 2px rgba(245,158,11,0.4); border-radius: 4px; }
+/* Focus ring only for keyboard navigation, not mouse clicks */
+:focus { outline: none; }
+:focus-visible { outline: none; box-shadow: 0 0 0 2px rgba(245,158,11,0.4); border-radius: 4px; }
 
 a, button, input, textarea, select {
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);

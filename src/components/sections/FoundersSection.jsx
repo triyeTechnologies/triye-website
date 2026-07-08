@@ -3,9 +3,9 @@ import { motion } from 'framer-motion';
 
 const FoundersSection = () => {
     const founders = [
-        { name: 'Akshay R Kumar',   role: 'CEO & Co-founder', image: '/aksh.jpg',  desc: 'Visionary leader driving Triye\'s mission to make Indian cities safer through AI-powered surveillance technology.' },
-        { name: 'Aditya Belludi',   role: 'CTO & Co-founder', image: '/adi.png',   desc: 'Technical architect behind Traced\'s real-time AI detection engine and camera network intelligence platform.', adiStyle: true },
-        { name: 'Akhilesh N Naidu', role: 'COO & Co-founder', image: '/akhi.png',  desc: 'Operations strategist ensuring seamless deployment, partnerships, and scaling of Triye\'s security solutions.' },
+        { name: 'Akshay R Kumar',   role: 'CEO & Co-founder', image: '/aksh.webp',  desc: 'Visionary leader driving Triye\'s mission to make Indian cities safer through AI-powered surveillance technology.' },
+        { name: 'Aditya Belludi',   role: 'CTO & Co-founder', image: '/adi.webp',   desc: 'Technical architect behind Traced\'s real-time AI detection engine and camera network intelligence platform.', adiStyle: true },
+        { name: 'Akhilesh N Naidu', role: 'COO & Co-founder', image: '/akhi.webp',  desc: 'Operations strategist ensuring seamless deployment, partnerships, and scaling of Triye\'s security solutions.' },
     ];
 
     return (
@@ -42,7 +42,7 @@ const FoundersSection = () => {
                             </div>
 
                             <h3 className="text-base font-bold text-white mb-1.5">{f.name}</h3>
-                            <span className="inline-block text-xs font-semibold text-amber-400 bg-amber-400/8 border border-amber-400/20 px-2.5 py-0.5 rounded-full mb-4">{f.role}</span>
+                            <span className="inline-block text-xs font-semibold text-amber-400 bg-amber-400/[0.08] border border-amber-400/20 px-2.5 py-0.5 rounded-full mb-4">{f.role}</span>
                             <p className="text-zinc-500 text-sm leading-relaxed">{f.desc}</p>
                         </motion.div>
                     ))}

@@ -3,18 +3,27 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
+// Don't throw at import time — a missing env var would blank the whole site.
+// The marketing pages must render even if the contact-form backend is unavailable.
 if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables')
+  console.error('Missing Supabase environment variables — contact form and admin dashboard are disabled')
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+export const supabase = (supabaseUrl && supabaseAnonKey)
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : null
+
+const requireSupabase = () => {
+  if (!supabase) throw new Error('Supabase is not configured')
+  return supabase
+}
 
 // Database operations
 export const database = {
   // Insert new message
   async insertMessage(messageData) {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await requireSupabase()
         .from('messages')
         .insert([{
           name: messageData.name,
@@ -36,7 +45,7 @@ export const database = {
   // Get all messages (admin only)
   async getMessages() {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await requireSupabase()
         .from('messages')
         .select('*')
         .order('created_at', { ascending: false })
@@ -52,7 +61,7 @@ export const database = {
   // Delete message (admin only)
   async deleteMessage(messageId) {
     try {
-      const { error } = await supabase
+      const { error } = await requireSupabase()
         .from('messages')
         .delete()
         .eq('id', messageId)
@@ -70,7 +79,7 @@ export const auth = {
   // Sign in admin
   async signIn(email, password) {
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await requireSupabase().auth.signInWithPassword({
         email,
         password
       })
@@ -86,7 +95,7 @@ export const auth = {
   // Sign out
   async signOut() {
     try {
-      const { error } = await supabase.auth.signOut()
+      const { error } = await requireSupabase().auth.signOut()
       if (error) throw error
     } catch (error) {
       console.error('Auth sign out error:', error)
@@ -97,7 +106,7 @@ export const auth = {
   // Get current session
   async getSession() {
     try {
-      const { data: { session } } = await supabase.auth.getSession()
+      const { data: { session } } = await requireSupabase().auth.getSession()
       return session
     } catch (error) {
       console.error('Get session error:', error)
@@ -107,6 +116,9 @@ export const auth = {
 
   // Listen to auth changes
   onAuthStateChange(callback) {
+    if (!supabase) {
+      return { data: { subscription: { unsubscribe() {} } } }
+    }
     return supabase.auth.onAuthStateChange(callback)
   }
 }

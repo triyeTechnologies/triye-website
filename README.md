@@ -1,152 +1,95 @@
-<<<<<<< HEAD
-# Triye - Revolutionary AI Security Solutions
+# Triye — AI Security Solutions
 
-A modern, interactive website built with React, Vite, and Tailwind CSS showcasing AI-powered security technology.
+Company website for **Triye Technologies** — showcasing **Traced**, our AI-powered real-time crime detection and camera-network intelligence platform.
 
-## Features
-
-- **Interactive Animations**: Particle background system, mouse follower effects, smooth scroll animations
-- **Modern Design**: Gradient backgrounds, glassmorphism effects, 3D transforms
-- **Responsive Layout**: Mobile-first design that works on all devices
-- **Performance Optimized**: Vite build system, React hooks, efficient animations
-- **Accessibility**: Reduced motion support, semantic HTML, keyboard navigation
+Built with React 18, Vite 6, and Tailwind CSS 3.
 
 ## Tech Stack
 
-- **Frontend**: React 18, Vite 4
-- **Styling**: Tailwind CSS 3, Custom CSS animations
+- **Frontend**: React 18, Vite 6, React Router 7
+- **Styling**: Tailwind CSS 3, Framer Motion
 - **Icons**: Lucide React
-- **Development**: ESLint, PostCSS, Autoprefixer
+- **Backend**: Supabase (contact messages + admin auth)
+- **Hosting**: Vercel (SPA rewrite configured in `vercel.json`)
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 16.0 or higher
-- npm or yarn
+- Node.js 18 or higher
+- npm
 
-### Installation
+### Setup
 
-1. Clone the repository:
-```bash
-git clone <your-repo-url>
-cd triye-website
-```
+1. Install dependencies:
 
-2. Install dependencies:
 ```bash
 npm install
 ```
 
+2. Configure environment variables — copy `.env.example` to `.env.local` and fill in your Supabase project values:
+
+```bash
+VITE_SUPABASE_URL=your-supabase-project-url
+VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
+```
+
 3. Start the development server:
+
 ```bash
 npm run dev
 ```
 
-4. Open your browser and visit `http://localhost:3000`
+Open `http://localhost:3000`.
 
-### Build for Production
+### Scripts
 
-```bash
-npm run build
-```
-
-### Preview Production Build
-
-```bash
-npm run preview
-```
+| Command           | Purpose                          |
+| ----------------- | -------------------------------- |
+| `npm run dev`     | Start dev server (port 3000)     |
+| `npm run build`   | Production build to `dist/`      |
+| `npm run preview` | Preview the production build     |
+| `npm run lint`    | Run ESLint over `src/`           |
 
 ## Project Structure
 
 ```
 triye-website/
-├── public/
-│   └── index.html
+├── public/                  # Static assets (images, videos, logo)
 ├── src/
 │   ├── components/
-│   │   └── TriyeWebsite.jsx    # Main component
-│   ├── App.jsx                 # App wrapper
-│   ├── main.jsx               # Entry point
-│   └── index.css              # Global styles
-├── .gitignore
-├── package.json
-├── postcss.config.js
+│   │   ├── sections/        # Landing page sections (Hero, Vision, Features, ...)
+│   │   ├── AdminPage.jsx    # /admin — message dashboard (Supabase auth)
+│   │   ├── EmailForm.jsx    # Contact form modal
+│   │   └── TriyeWebsite.jsx # Landing page composition
+│   ├── lib/supabase.js      # Supabase client + database/auth helpers
+│   ├── App.jsx
+│   ├── main.jsx             # Entry + routes (/ and /admin)
+│   └── index.css            # Tailwind + global styles
 ├── tailwind.config.js
 ├── vite.config.js
-└── README.md
+└── vercel.json
 ```
 
-## Key Components
+## Routes
 
-### TriyeWebsite.jsx
-Main component containing all sections:
-- Header with navigation
-- Hero section with particle background
-- Vision section with interactive demo
-- Technology concepts grid
-- Development roadmap
-- Future products showcase
-- Mission statement
-- Contact information
-- Footer
+- `/` — Marketing landing page
+- `/admin` — Message dashboard (requires Supabase authenticated user)
 
-### Interactive Features
-- **Particle Background**: Canvas-based animated particle system
-- **Mouse Follower**: Custom cursor that follows mouse movement
-- **Scroll Animations**: Elements animate into view during scroll
-- **Hover Effects**: Cards scale, rotate, and transform on hover
-- **3D Elements**: Floating geometric shapes with physics
+## Supabase Notes
 
-## Customization
+The contact form inserts rows into a `messages` table using the public anon key.
+**Row Level Security must be enabled** on that table with policies that:
 
-### Colors
-Modify the color scheme in `tailwind.config.js`:
-```javascript
-extend: {
-  colors: {
-    // Add your custom colors here
-  }
-}
-```
-
-### Animations
-Add custom animations in `tailwind.config.js` under `extend.animation` and `extend.keyframes`.
-
-### Content
-Update text content, images, and icons directly in `TriyeWebsite.jsx`.
-
-## Performance Notes
-
-- Animations use CSS transforms for hardware acceleration
-- Canvas animations are optimized with requestAnimationFrame
-- Event listeners are properly cleaned up to prevent memory leaks
-- Responsive images and optimized asset loading
-
-## Browser Support
-
-- Chrome 88+
-- Firefox 85+
-- Safari 14+
-- Edge 88+
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+- allow `INSERT` for the `anon` role
+- restrict `SELECT` and `DELETE` to authenticated users only
 
 ## License
 
-This project is proprietary software owned by Triye.
+Proprietary software owned by Triye Technologies Pvt. Ltd.
 
-## Support
+## Contact
 
-For questions or issues, contact:
-- Business: partnerships@triye.com
-- Technical: tech@triye.com
-=======
-# triye-website
->>>>>>> 658f34442f373179ecefc5338ddb539db5a995da
+- Email: triye3@gmail.com
+- Instagram: [@triye_technologies](https://www.instagram.com/triye_technologies/)
+- LinkedIn: [Triye Technologies](https://www.linkedin.com/company/triye-technologies/)

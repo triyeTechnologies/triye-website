@@ -1,6 +1,30 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Play } from 'lucide-react';
+
+// Loop clip that only loads and plays while it's near the viewport
+const LazyLoopVideo = ({ src }) => {
+    const videoRef = useRef(null);
+
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        const observer = new IntersectionObserver(([entry]) => {
+            if (entry.isIntersecting) {
+                if (!video.src) video.src = src;
+                video.play().catch(() => {});
+            } else {
+                video.pause();
+            }
+        }, { rootMargin: '200px' });
+
+        observer.observe(video);
+        return () => observer.disconnect();
+    }, [src]);
+
+    return <video ref={videoRef} className="w-full h-full object-cover" loop muted playsInline preload="none" />;
+};
 
 const VideoSection = () => (
     <section id="video" className="py-16 sm:py-28" style={{ background: '#111111' }}>
@@ -25,8 +49,8 @@ const VideoSection = () => (
                             <Play className="w-7 h-7 text-white fill-white ml-1" />
                         </div>
                     </div>
-                    <video className="w-full h-auto max-h-[380px] object-cover" controls preload="metadata" poster="/sotat1.png">
-                        <source src="/Traced by Triye Demo.mp4" type="video/mp4" />
+                    <video className="w-full h-auto max-h-[380px] object-cover" controls preload="none" poster="/sotat1.webp">
+                        <source src="/traced-demo.mp4" type="video/mp4" />
                     </video>
                 </div>
             </motion.div>
@@ -42,9 +66,7 @@ const VideoSection = () => (
                     {['/video1.mp4', '/video2.mp4', '/video3.mp4', '/video4.mp4'].map((src, i) => (
                         <motion.div key={i} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
                             className="rounded-xl overflow-hidden bg-black aspect-video">
-                            <video className="w-full h-full object-cover" autoPlay loop muted playsInline>
-                                <source src={src} type="video/mp4" />
-                            </video>
+                            <LazyLoopVideo src={src} />
                         </motion.div>
                     ))}
                 </div>

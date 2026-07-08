@@ -1,9 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Brain, Network, Zap, Target, BarChart3, Lock, X, CheckCircle } from 'lucide-react';
 
 const ConceptSection = () => {
     const [selected, setSelected] = useState(null);
+
+    // Modal accessibility: Escape closes, body scroll locked while open
+    useEffect(() => {
+        if (!selected) return;
+        const onKey = (e) => { if (e.key === 'Escape') setSelected(null); };
+        document.addEventListener('keydown', onKey);
+        const prevOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.removeEventListener('keydown', onKey);
+            document.body.style.overflow = prevOverflow;
+        };
+    }, [selected]);
 
     const concepts = [
         { icon: Brain,    title: 'AI-Powered Detection',        desc: 'ML algorithms analyze camera feeds in real-time, identifying criminal activities with high precision and minimal false positives.',   color: 'bg-amber-500',  span: 'lg:col-span-2', detailContent: { title: 'AI-Powered Detection System', description: 'Our AI system continuously monitors traffic CCTV cameras using cutting-edge ML to detect criminal activities in real-time.', features: ['Real-time analysis of traffic camera feeds', 'Pattern recognition for suspicious behaviors', 'ML models trained for urban security', 'Edge computing for instant processing', 'High accuracy with minimal false positives', 'Continuous learning from new data'] } },
@@ -35,7 +48,7 @@ const ConceptSection = () => {
                             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }}
                             whileHover={{ y: -3 }}
                             onClick={() => setSelected(c)}
-                            className={`border border-white/6 hover:border-white/14 rounded-2xl p-6 cursor-pointer group transition-all duration-200 ${c.span} ${i === 0 ? 'sm:col-span-2 lg:col-span-2' : ''} ${i === 5 ? 'sm:col-span-2 lg:col-span-2' : ''}`}
+                            className={`border border-white/[0.06] hover:border-white/[0.14] rounded-2xl p-6 cursor-pointer group transition-all duration-200 ${c.span} ${i === 0 ? 'sm:col-span-2 lg:col-span-2' : ''} ${i === 5 ? 'sm:col-span-2 lg:col-span-2' : ''}`}
                             style={{ background: '#1a1a1a' }}
                         >
                             <div className={`w-11 h-11 ${c.color} rounded-xl flex items-center justify-center mb-4 shadow-sm group-hover:scale-110 transition-transform duration-200`}>
@@ -56,6 +69,7 @@ const ConceptSection = () => {
                 {selected && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={() => setSelected(null)}>
                         <motion.div initial={{ scale: 0.93, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.93, y: 20 }} transition={{ type: 'spring', damping: 28, stiffness: 300 }}
+                            role="dialog" aria-modal="true" aria-label={selected.detailContent.title}
                             className="rounded-2xl p-7 max-w-2xl w-full max-h-[85vh] overflow-y-auto border border-white/10"
                             style={{ background: '#1a1a1a' }}
                             onClick={e => e.stopPropagation()}>
@@ -64,9 +78,9 @@ const ConceptSection = () => {
                                     <div className={`w-10 h-10 ${selected.color} rounded-xl flex items-center justify-center`}><selected.icon className="w-5 h-5 text-white" /></div>
                                     <h2 className="text-lg font-bold text-white">{selected.detailContent.title}</h2>
                                 </div>
-                                <button onClick={() => setSelected(null)} className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors"><X className="w-4 h-4 text-zinc-400" /></button>
+                                <button onClick={() => setSelected(null)} aria-label="Close dialog" className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors"><X className="w-4 h-4 text-zinc-400" /></button>
                             </div>
-                            <p className="text-zinc-400 text-sm leading-relaxed pb-5 mb-5 border-b border-white/6">{selected.detailContent.description}</p>
+                            <p className="text-zinc-400 text-sm leading-relaxed pb-5 mb-5 border-b border-white/[0.06]">{selected.detailContent.description}</p>
                             <p className="text-xs font-bold text-zinc-600 uppercase tracking-wider mb-3">Key Features</p>
                             <ul className="space-y-2.5">
                                 {selected.detailContent.features.map((f, i) => (
